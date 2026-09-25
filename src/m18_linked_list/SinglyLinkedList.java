@@ -40,6 +40,18 @@ public class SinglyLinkedList {
         }
     }
 
+    public void displayReverseRecursive() {
+        displayReverseRecursive(head);
+        System.out.println();
+    }
+
+    private void displayReverseRecursive(Node node) {
+        if (node != null) {
+            displayReverseRecursive(node.next);
+            System.out.print(node.data + " ");
+        }
+    }
+
     public int length() {
         int count = 0;
         Node current = head;
@@ -146,5 +158,44 @@ public class SinglyLinkedList {
             min = node.data;
         }
         return min;
+    }
+
+    public void insert(int index, int data) {
+        if (index < 0 || index > length()) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+        Node newNode = new Node(data);
+        if (index == 0) {
+            newNode.next = head;
+            head = newNode;
+            return;
+        }
+        Node current = head;
+        for (int i = 0; i < index - 1; i++) {
+            current = current.next;
+        }
+        newNode.next = current.next;
+        current.next = newNode;
+    }
+
+    public int delete(int index) {
+        if (head == null) {
+            throw new NoSuchElementException("List is empty");
+        }
+        if (index < 0 || index >= length()) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+        if (index == 0) {
+            int deletedValue = head.data;
+            head = head.next;
+            return deletedValue;
+        }
+        Node current = head;
+        for (int i = 0; i < index - 1; i++) {
+            current = current.next;
+        }
+        Node deletedNode = current.next;
+        current.next = deletedNode.next;
+        return deletedNode.data;
     }
 }

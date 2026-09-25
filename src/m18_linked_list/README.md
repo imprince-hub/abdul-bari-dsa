@@ -1,6 +1,6 @@
 # 18. Linked List
 
-Package: `m18_linked_list` · 17 lectures · 8 done
+Package: `m18_linked_list` · 17 lectures · 12 done
 
 Put this line at the top of every file in this folder:
 
@@ -24,10 +24,10 @@ package m18_linked_list;
 
 ## Insertion and Deletion Operations
 
-- [ ] LinkedList Insert
-- [ ] LinkedList Insert Solution
-- [ ] Deleting a Node in Linked List
-- [ ] Deleting a Node in Linked List - Solution
+- [x] LinkedList Insert
+- [x] LinkedList Insert Solution
+- [x] Deleting a Node in Linked List
+- [x] Deleting a Node in Linked List - Solution
 
 ## Searching, Improvements, and Class Implementation
 
@@ -42,7 +42,7 @@ package m18_linked_list;
 | File | What it has |
 |------|-------------|
 | `Node.java` | One node: `data`, `next`, and a constructor |
-| `SinglyLinkedList.java` | `create(int[])`. Iterative: `display()`, `length()`, `sum()`, `max()`, `min()`. Recursive: `displayRecursive()`, `lengthRecursive()`, `sumRecursive()`, `maxRecursive()`, `minRecursive()` |
-| `LinkedListDemo.java` | `main()` that builds a list and prints each iterative and recursive result side by side |
+| `SinglyLinkedList.java` | `create(int[])`, `insert(index, data)`, `delete(index)`. Iterative: `display()`, `length()`, `sum()`, `max()`, `min()`. Recursive: `displayRecursive()`, `displayReverseRecursive()`, `lengthRecursive()`, `sumRecursive()`, `maxRecursive()`, `minRecursive()` |
+| `LinkedListDemo.java` | `main()` that prints each iterative and recursive result side by side, then builds a second list with `insert` and removes a node with `delete` |
 
 [Back to all modules](../../README.md)
