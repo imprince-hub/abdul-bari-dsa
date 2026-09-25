@@ -11,10 +11,9 @@ public class SinglyLinkedList {
             return;
         }
         head = new Node(arr[0]);
-        Node last, newNode;
-        last = head;
+        Node last = head;
         for (int i = 1; i < arr.length; i++) {
-            newNode = new Node(arr[i]);
+            Node newNode = new Node(arr[i]);
             last.next = newNode;
             last = newNode;
         }
@@ -41,15 +40,35 @@ public class SinglyLinkedList {
         }
     }
 
-    public int countRecursive() {
-        return countRecursive(head);
+    public int length() {
+        int count = 0;
+        Node current = head;
+        while (current != null) {
+            count++;
+            current = current.next;
+        }
+        return count;
     }
 
-    private int countRecursive(Node node) {
+    public int lengthRecursive() {
+        return lengthRecursive(head);
+    }
+
+    private int lengthRecursive(Node node) {
         if (node == null) {
             return 0;
         }
-        return 1 + countRecursive(node.next);
+        return 1 + lengthRecursive(node.next);
+    }
+
+    public int sum() {
+        int result = 0;
+        Node current = head;
+        while (current != null) {
+            result += current.data;
+            current = current.next;
+        }
+        return result;
     }
 
     public int sumRecursive() {
@@ -61,6 +80,21 @@ public class SinglyLinkedList {
             return 0;
         }
         return node.data + sumRecursive(node.next);
+    }
+
+    public int max() {
+        if (head == null) {
+            throw new NoSuchElementException("List is empty");
+        }
+        int result = head.data;
+        Node current = head.next;
+        while (current != null) {
+            if (current.data > result) {
+                result = current.data;
+            }
+            current = current.next;
+        }
+        return result;
     }
 
     public int maxRecursive() {
@@ -79,6 +113,21 @@ public class SinglyLinkedList {
             max = node.data;
         }
         return max;
+    }
+
+    public int min() {
+        if (head == null) {
+            throw new NoSuchElementException("List is empty");
+        }
+        int result = head.data;
+        Node current = head.next;
+        while (current != null) {
+            if (current.data < result) {
+                result = current.data;
+            }
+            current = current.next;
+        }
+        return result;
     }
 
     public int minRecursive() {

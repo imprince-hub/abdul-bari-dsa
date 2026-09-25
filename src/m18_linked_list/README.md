@@ -42,7 +42,7 @@ package m18_linked_list;
 | File | What it has |
 |------|-------------|
 | `Node.java` | One node: `data`, `next`, and a constructor |
-| `SinglyLinkedList.java` | `create(int[])`, `display()`, and recursive `displayRecursive()`, `countRecursive()`, `sumRecursive()`, `maxRecursive()`, `minRecursive()` |
-| `LinkedListDemo.java` | `main()` that builds a list and runs every method |
+| `SinglyLinkedList.java` | `create(int[])`. Iterative: `display()`, `length()`, `sum()`, `max()`, `min()`. Recursive: `displayRecursive()`, `lengthRecursive()`, `sumRecursive()`, `maxRecursive()`, `minRecursive()` |
+| `LinkedListDemo.java` | `main()` that builds a list and prints each iterative and recursive result side by side |
 
 [Back to all modules](../../README.md)

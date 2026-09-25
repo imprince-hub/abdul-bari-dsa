@@ -7,9 +7,13 @@ public class LinkedListDemo {
         list.create(arr);
         list.display();
         list.displayRecursive();
-        System.out.println("count = " + list.countRecursive());
-        System.out.println("sum = " + list.sumRecursive());
-        System.out.println("max = " + list.maxRecursive());
-        System.out.println("min = " + list.minRecursive());
+        System.out.println("length = " + list.length());
+        System.out.println("lengthRecursive = " + list.lengthRecursive());
+        System.out.println("sum = " + list.sum());
+        System.out.println("sumRecursive = " + list.sumRecursive());
+        System.out.println("max = " + list.max());
+        System.out.println("maxRecursive = " + list.maxRecursive());
+        System.out.println("min = " + list.min());
+        System.out.println("minRecursive = " + list.minRecursive());
     }
 }
