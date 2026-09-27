@@ -1,26 +1,40 @@
 package m18_linked_list;
 
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
-public class SinglyLinkedList {
-    private Node head;
+public class GenericLinkedList<T extends Comparable<T>> {
 
-    public void create(int[] arr) {
+    private static class Node<T> {
+        T data;
+        Node<T> next;
+
+        Node(T data) {
+            this.data = data;
+        }
+    }
+
+    private Node<T> head;
+
+    public void create(T[] arr) {
+        for (T item : arr) {
+            Objects.requireNonNull(item, "null elements are not allowed");
+        }
         if (arr.length == 0) {
             head = null;
             return;
         }
-        head = new Node(arr[0]);
-        Node last = head;
+        head = new Node<>(arr[0]);
+        Node<T> last = head;
         for (int i = 1; i < arr.length; i++) {
-            Node newNode = new Node(arr[i]);
+            Node<T> newNode = new Node<>(arr[i]);
             last.next = newNode;
             last = newNode;
         }
     }
 
     public void display() {
-        Node current = head;
+        Node<T> current = head;
         while (current != null) {
             System.out.print(current.data + " ");
             current = current.next;
@@ -33,7 +47,7 @@ public class SinglyLinkedList {
         System.out.println();
     }
 
-    private void displayRecursive(Node node) {
+    private void displayRecursive(Node<T> node) {
         if (node != null) {
             System.out.print(node.data + " ");
             displayRecursive(node.next);
@@ -45,7 +59,7 @@ public class SinglyLinkedList {
         System.out.println();
     }
 
-    private void displayReverseRecursive(Node node) {
+    private void displayReverseRecursive(Node<T> node) {
         if (node != null) {
             displayReverseRecursive(node.next);
             System.out.print(node.data + " ");
@@ -54,7 +68,7 @@ public class SinglyLinkedList {
 
     public int length() {
         int count = 0;
-        Node current = head;
+        Node<T> current = head;
         while (current != null) {
             count++;
             current = current.next;
@@ -66,42 +80,21 @@ public class SinglyLinkedList {
         return lengthRecursive(head);
     }
 
-    private int lengthRecursive(Node node) {
+    private int lengthRecursive(Node<T> node) {
         if (node == null) {
             return 0;
         }
         return 1 + lengthRecursive(node.next);
     }
 
-    public int sum() {
-        int result = 0;
-        Node current = head;
-        while (current != null) {
-            result += current.data;
-            current = current.next;
-        }
-        return result;
-    }
-
-    public int sumRecursive() {
-        return sumRecursive(head);
-    }
-
-    private int sumRecursive(Node node) {
-        if (node == null) {
-            return 0;
-        }
-        return node.data + sumRecursive(node.next);
-    }
-
-    public int max() {
+    public T max() {
         if (head == null) {
             throw new NoSuchElementException("List is empty");
         }
-        int result = head.data;
-        Node current = head.next;
+        T result = head.data;
+        Node<T> current = head.next;
         while (current != null) {
-            if (current.data > result) {
+            if (current.data.compareTo(result) > 0) {
                 result = current.data;
             }
             current = current.next;
@@ -109,32 +102,32 @@ public class SinglyLinkedList {
         return result;
     }
 
-    public int maxRecursive() {
+    public T maxRecursive() {
         if (head == null) {
             throw new NoSuchElementException("List is empty");
         }
         return maxRecursive(head);
     }
 
-    private int maxRecursive(Node node) {
-        if (node == null) {
-            return Integer.MIN_VALUE;
+    private T maxRecursive(Node<T> node) {
+        if (node.next == null) {
+            return node.data;
         }
-        int max = maxRecursive(node.next);
-        if (node.data > max) {
-            max = node.data;
+        T maxOfRest = maxRecursive(node.next);
+        if (node.data.compareTo(maxOfRest) > 0) {
+            return node.data;
         }
-        return max;
+        return maxOfRest;
     }
 
-    public int min() {
+    public T min() {
         if (head == null) {
             throw new NoSuchElementException("List is empty");
         }
-        int result = head.data;
-        Node current = head.next;
+        T result = head.data;
+        Node<T> current = head.next;
         while (current != null) {
-            if (current.data < result) {
+            if (current.data.compareTo(result) < 0) {
                 result = current.data;
             }
             current = current.next;
@@ -142,35 +135,36 @@ public class SinglyLinkedList {
         return result;
     }
 
-    public int minRecursive() {
+    public T minRecursive() {
         if (head == null) {
             throw new NoSuchElementException("List is empty");
         }
         return minRecursive(head);
     }
 
-    private int minRecursive(Node node) {
-        if (node == null) {
-            return Integer.MAX_VALUE;
+    private T minRecursive(Node<T> node) {
+        if (node.next == null) {
+            return node.data;
         }
-        int min = minRecursive(node.next);
-        if (node.data < min) {
-            min = node.data;
+        T minOfRest = minRecursive(node.next);
+        if (node.data.compareTo(minOfRest) < 0) {
+            return node.data;
         }
-        return min;
+        return minOfRest;
     }
 
-    public void insert(int index, int data) {
+    public void insert(int index, T data) {
+        Objects.requireNonNull(data, "null elements are not allowed");
         if (index < 0 || index > length()) {
             throw new IndexOutOfBoundsException("Invalid index: " + index);
         }
-        Node newNode = new Node(data);
+        Node<T> newNode = new Node<>(data);
         if (index == 0) {
             newNode.next = head;
             head = newNode;
             return;
         }
-        Node current = head;
+        Node<T> current = head;
         for (int i = 0; i < index - 1; i++) {
             current = current.next;
         }
@@ -178,7 +172,7 @@ public class SinglyLinkedList {
         current.next = newNode;
     }
 
-    public int delete(int index) {
+    public T delete(int index) {
         if (head == null) {
             throw new NoSuchElementException("List is empty");
         }
@@ -186,24 +180,24 @@ public class SinglyLinkedList {
             throw new IndexOutOfBoundsException("Invalid index: " + index);
         }
         if (index == 0) {
-            int deletedValue = head.data;
+            T deletedValue = head.data;
             head = head.next;
             return deletedValue;
         }
-        Node current = head;
+        Node<T> current = head;
         for (int i = 0; i < index - 1; i++) {
             current = current.next;
         }
-        Node deletedNode = current.next;
+        Node<T> deletedNode = current.next;
         current.next = deletedNode.next;
         return deletedNode.data;
     }
 
-    public int search(int key) {
-        Node current = head;
+    public int search(T key) {
+        Node<T> current = head;
         int index = 0;
         while (current != null) {
-            if (current.data == key) {
+            if (current.data.equals(key)) {
                 return index;
             }
             current = current.next;
@@ -212,27 +206,27 @@ public class SinglyLinkedList {
         return -1;
     }
 
-    public int searchRecursive(int key) {
+    public int searchRecursive(T key) {
         return searchRecursive(key, head, 0);
     }
 
-    private int searchRecursive(int key, Node node, int index) {
+    private int searchRecursive(T key, Node<T> node, int index) {
         if (node == null) {
             return -1;
         }
-        if (node.data == key) {
+        if (node.data.equals(key)) {
             return index;
         }
         return searchRecursive(key, node.next, index + 1);
     }
 
     // Returns the index where key was found (before it is moved to head), or -1 if not found.
-    public int searchMoveToHead(int key) {
-        Node current = head;
-        Node prev = null;
+    public int searchMoveToHead(T key) {
+        Node<T> current = head;
+        Node<T> prev = null;
         int index = 0;
         while (current != null) {
-            if (current.data == key) {
+            if (current.data.equals(key)) {
                 if (current != head) {
                     prev.next = current.next;
                     current.next = head;

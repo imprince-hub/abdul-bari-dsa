@@ -32,5 +32,32 @@ public class LinkedListDemo {
         System.out.println("deleted = " + deleted);
         System.out.print("after delete(2) = ");
         listFromInserts.display();
+        System.out.println("search = " + listFromInserts.search(4));
+        System.out.println("searchRecursive = " + listFromInserts.searchRecursive(9));
+        System.out.print("before searchMoveToHead(2) = ");
+        listFromInserts.display();
+        System.out.println("searchMoveToHead(2) = " + listFromInserts.searchMoveToHead(2));
+        System.out.print("after searchMoveToHead(2) = ");
+        listFromInserts.display();
+        System.out.println("searchMoveToHead(2) again = " + listFromInserts.searchMoveToHead(2));
+
+        System.out.println();
+        GenericLinkedList<Integer> numbers = new GenericLinkedList<>();
+        numbers.create(new Integer[]{8, 3, 11, 5});
+        System.out.print("generic Integer list = ");
+        numbers.display();
+        System.out.println("max = " + numbers.max() + ", maxRecursive = " + numbers.maxRecursive());
+        System.out.println("min = " + numbers.min() + ", minRecursive = " + numbers.minRecursive());
+        System.out.println("search(11) = " + numbers.search(11) + ", searchRecursive(11) = " + numbers.searchRecursive(11));
+
+        GenericLinkedList<String> words = new GenericLinkedList<>();
+        words.create(new String[]{"mango", "apple", "kiwi"});
+        words.insert(1, "banana");
+        System.out.print("generic String list = ");
+        words.display();
+        System.out.println("max = " + words.max() + ", min = " + words.min());
+        System.out.println("deleted = " + words.delete(0));
+        System.out.print("after delete(0) = ");
+        words.display();
     }
 }
