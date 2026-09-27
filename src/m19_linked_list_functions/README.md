@@ -1,6 +1,6 @@
 # 19. Linked List Functions
 
-Package: `m19_linked_list_functions` · 19 lectures
+Package: `m19_linked_list_functions` · 19 lectures · 1 done
 
 Put this line at the top of every file in this folder:
 
@@ -10,7 +10,7 @@ package m19_linked_list_functions;
 
 ## Removal, Reversal, and Recursion
 
-- [ ] LinkedList Remove
+- [x] LinkedList Remove
 - [ ] LinkedList Reverse
 - [ ] LinkedList Reverse Solution
 - [ ] LinkedList Reverse using Recursion
@@ -38,5 +38,14 @@ package m19_linked_list_functions;
 
 - [ ] Floyd's Cycle Algorithm
 - [ ] LinkedList isLoop Solution
+
+## Code in this folder
+
+| File | What it has |
+|------|-------------|
+| `Node.java` | One node: `data`, `next`, and a constructor (copy of the m18 `Node`) |
+| `SinglyLinkedList.java` | From m18: `create(int[])`, `display()`, `length()`. New: `remove(key)` removes the first match and returns `false` if the key is missing or the list is empty |
+| `NodeUtils.java` | Static helpers for raw `Node` chains (the "Simple Solution" lectures). Empty for now |
+| `LinkedListFunctionsDemo.java` | `main()` that runs `remove` on the head, a middle node, the last node, a missing key, a list with duplicates and an empty list |
 
 [Back to all modules](../../README.md)
