@@ -57,4 +57,16 @@ public class SinglyLinkedList {
         }
         return false;
     }
+
+    public void reverse() {
+        Node ahead = head;
+        Node current = null;
+        while (ahead != null) {
+            Node prev = current;
+            current = ahead;
+            ahead = ahead.next;
+            current.next = prev;
+        }
+        head = current;
+    }
 }

@@ -26,5 +26,14 @@ public class LinkedListFunctionsDemo {
         System.out.println();
         SinglyLinkedList emptyList = new SinglyLinkedList();
         System.out.println("remove(1) on empty list = " + emptyList.remove(1));
+
+        System.out.println();
+        SinglyLinkedList toReverse = new SinglyLinkedList();
+        toReverse.create(new int[]{1, 2, 3, 4, 5});
+        System.out.print("before reverse = ");
+        toReverse.display();
+        toReverse.reverse();
+        System.out.print("after reverse = ");
+        toReverse.display();
     }
 }
