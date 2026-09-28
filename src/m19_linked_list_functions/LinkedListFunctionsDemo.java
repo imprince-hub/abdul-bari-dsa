@@ -44,5 +44,14 @@ public class LinkedListFunctionsDemo {
         toReverseUsingArray.reverseUsingArray();
         System.out.print("after reverseUsingArray = ");
         toReverseUsingArray.display();
+
+        System.out.println();
+        SinglyLinkedList toReverseRecursive = new SinglyLinkedList();
+        toReverseRecursive.create(new int[]{1, 2, 3, 4, 5});
+        System.out.print("before reverseRecursive = ");
+        toReverseRecursive.display();
+        toReverseRecursive.reverseRecursive();
+        System.out.print("after reverseRecursive = ");
+        toReverseRecursive.display();
     }
 }

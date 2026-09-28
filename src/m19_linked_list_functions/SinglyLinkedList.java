@@ -84,4 +84,19 @@ public class SinglyLinkedList {
             current = current.next;
         }
     }
+
+    public void reverseRecursive() {
+        reverseRecursive(head, null);
+    }
+
+    private void reverseRecursive(Node current, Node prev) {
+        if (current == null) {
+            head = prev;
+            return;
+        }
+        if (current != null) {
+            reverseRecursive(current.next, current);
+            current.next = prev;
+        }
+    }
 }
