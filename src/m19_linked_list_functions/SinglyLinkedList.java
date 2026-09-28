@@ -94,9 +94,18 @@ public class SinglyLinkedList {
             head = prev;
             return;
         }
-        if (current != null) {
-            reverseRecursive(current.next, current);
-            current.next = prev;
+        reverseRecursive(current.next, current);
+        current.next = prev;
+    }
+
+    public boolean isSorted() {
+        Node current = head;
+        while (current != null && current.next != null) {
+            if (current.data > current.next.data) {
+                return false;
+            }
+            current = current.next;
         }
+        return true;
     }
 }

@@ -53,5 +53,24 @@ public class LinkedListFunctionsDemo {
         toReverseRecursive.reverseRecursive();
         System.out.print("after reverseRecursive = ");
         toReverseRecursive.display();
+
+        System.out.println();
+        SinglyLinkedList sortedList = new SinglyLinkedList();
+        sortedList.create(new int[]{1, 2, 3, 4, 5});
+        System.out.print("sortedList = ");
+        sortedList.display();
+        System.out.println("isSorted() = " + sortedList.isSorted());
+
+        SinglyLinkedList unsortedList = new SinglyLinkedList();
+        unsortedList.create(new int[]{1, 3, 2, 4});
+        System.out.print("unsortedList = ");
+        unsortedList.display();
+        System.out.println("isSorted() = " + unsortedList.isSorted());
+
+        SinglyLinkedList equalNeighbours = new SinglyLinkedList();
+        equalNeighbours.create(new int[]{1, 2, 2, 3});
+        System.out.print("equalNeighbours = ");
+        equalNeighbours.display();
+        System.out.println("isSorted() = " + equalNeighbours.isSorted());
     }
 }
