@@ -69,4 +69,19 @@ public class SinglyLinkedList {
         }
         head = current;
     }
+
+    public void reverseUsingArray() {
+        Node current = head;
+        int[] array = new int[length()];
+        int index = 0;
+        while (current != null) {
+            array[index++] = current.data;
+            current = current.next;
+        }
+        current = head;
+        while (index > 0) {
+            current.data = array[--index];
+            current = current.next;
+        }
+    }
 }
