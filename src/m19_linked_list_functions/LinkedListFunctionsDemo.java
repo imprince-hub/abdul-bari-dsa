@@ -72,5 +72,25 @@ public class LinkedListFunctionsDemo {
         System.out.print("equalNeighbours = ");
         equalNeighbours.display();
         System.out.println("isSorted() = " + equalNeighbours.isSorted());
+
+        System.out.println();
+        SinglyLinkedList toSortedInsert = new SinglyLinkedList();
+        toSortedInsert.create(new int[]{1, 3, 9, 13, 17});
+        System.out.print("before sortedInsert = ");
+        toSortedInsert.display();
+        toSortedInsert.sortedInsert(14);
+        System.out.print("after sortedInsert(14) middle = ");
+        toSortedInsert.display();
+        toSortedInsert.sortedInsert(0);
+        System.out.print("after sortedInsert(0) head = ");
+        toSortedInsert.display();
+        toSortedInsert.sortedInsert(20);
+        System.out.print("after sortedInsert(20) end = ");
+        toSortedInsert.display();
+
+        SinglyLinkedList emptyForInsert = new SinglyLinkedList();
+        emptyForInsert.sortedInsert(5);
+        System.out.print("sortedInsert(5) on empty list = ");
+        emptyForInsert.display();
     }
 }

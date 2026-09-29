@@ -108,4 +108,21 @@ public class SinglyLinkedList {
         }
         return true;
     }
+
+    // Assumes the list is already sorted in ascending order. Puts data before the first bigger value.
+    public void sortedInsert(int data) {
+        Node prev = null;
+        Node current = head;
+        while (current != null && current.data <= data) {
+            prev = current;
+            current = current.next;
+        }
+        Node newNode = new Node(data);
+        newNode.next = current;
+        if (prev == null) {
+            head = newNode;
+        } else {
+            prev.next = newNode;
+        }
+    }
 }
