@@ -1,5 +1,7 @@
 package m19_linked_list_functions;
 
+import java.util.Objects;
+
 public class SinglyLinkedList {
     private Node head;
 
@@ -163,5 +165,23 @@ public class SinglyLinkedList {
         } else {
             prev.next = node;
         }
+    }
+
+    public void concat(SinglyLinkedList other) {
+        Objects.requireNonNull(other, "other list is null");
+        if (other == this) {
+            throw new IllegalArgumentException("Cannot concat a list with itself");
+        }
+        if (head == null) {
+            head = other.head;
+            other.head = null;
+            return;
+        }
+        Node last = head;
+        while (last.next != null) {
+            last = last.next;
+        }
+        last.next = other.head;
+        other.head = null;
     }
 }

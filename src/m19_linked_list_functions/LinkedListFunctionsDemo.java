@@ -119,5 +119,32 @@ public class LinkedListFunctionsDemo {
         emptyToSortInline.insertionSortInline();
         System.out.print("insertionSortInline on empty list = ");
         emptyToSortInline.display();
+
+        System.out.println();
+        Node first = NodeUtils.create(new int[]{1, 2, 3});
+        Node second = NodeUtils.create(new int[]{4, 5});
+        System.out.print("first = ");
+        NodeUtils.display(first);
+        System.out.print("second = ");
+        NodeUtils.display(second);
+        Node joined = NodeUtils.concat(first, second);
+        System.out.print("NodeUtils.concat(first, second) = ");
+        NodeUtils.display(joined);
+
+        System.out.println();
+        SinglyLinkedList firstList = new SinglyLinkedList();
+        firstList.create(new int[]{1, 2, 3});
+        SinglyLinkedList secondList = new SinglyLinkedList();
+        secondList.create(new int[]{4, 5});
+        firstList.concat(secondList);
+        System.out.print("after firstList.concat(secondList), firstList = ");
+        firstList.display();
+        System.out.print("after firstList.concat(secondList), secondList = ");
+        secondList.display();
+        try {
+            firstList.concat(firstList);
+        } catch (IllegalArgumentException e) {
+            System.out.println("firstList.concat(firstList) = " + e.getMessage());
+        }
     }
 }
