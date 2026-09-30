@@ -43,4 +43,45 @@ public class NodeUtils {
         last.next = second;
         return first;
     }
+
+    // Merges two chains that are already sorted in ascending order and returns the head of the result.
+    // No new nodes are created; both input chains are used up.
+    public static Node merge(Node first, Node second) {
+        if (first == null) {
+            return second;
+        }
+        if (second == null) {
+            return first;
+        }
+        if (first == second) {
+            throw new IllegalArgumentException("Cannot merge a chain with itself");
+        }
+        Node mergedHead;
+        if (first.data <= second.data) {
+            mergedHead = first;
+            first = first.next;
+        } else {
+            mergedHead = second;
+            second = second.next;
+        }
+        Node last = mergedHead;
+        while (first != null && second != null) {
+            Node picked;
+            if (first.data <= second.data) {
+                picked = first;
+                first = first.next;
+            } else {
+                picked = second;
+                second = second.next;
+            }
+            last.next = picked;
+            last = picked;
+        }
+        if (first == null) {
+            last.next = second;
+        } else {
+            last.next = first;
+        }
+        return mergedHead;
+    }
 }

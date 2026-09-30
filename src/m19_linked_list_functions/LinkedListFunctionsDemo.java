@@ -146,5 +146,27 @@ public class LinkedListFunctionsDemo {
         } catch (IllegalArgumentException e) {
             System.out.println("firstList.concat(firstList) = " + e.getMessage());
         }
+
+        System.out.println();
+        Node firstSorted = NodeUtils.create(new int[]{1, 4, 7});
+        Node secondSorted = NodeUtils.create(new int[]{2, 3, 8});
+        System.out.print("firstSorted = ");
+        NodeUtils.display(firstSorted);
+        System.out.print("secondSorted = ");
+        NodeUtils.display(secondSorted);
+        Node merged = NodeUtils.merge(firstSorted, secondSorted);
+        System.out.print("NodeUtils.merge(firstSorted, secondSorted) = ");
+        NodeUtils.display(merged);
+
+        System.out.println();
+        SinglyLinkedList firstSortedList = new SinglyLinkedList();
+        firstSortedList.create(new int[]{1, 4, 7});
+        SinglyLinkedList secondSortedList = new SinglyLinkedList();
+        secondSortedList.create(new int[]{2, 3, 8});
+        firstSortedList.merge(secondSortedList);
+        System.out.print("after firstSortedList.merge(secondSortedList), firstSortedList = ");
+        firstSortedList.display();
+        System.out.print("after firstSortedList.merge(secondSortedList), secondSortedList = ");
+        secondSortedList.display();
     }
 }

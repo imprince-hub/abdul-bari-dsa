@@ -184,4 +184,48 @@ public class SinglyLinkedList {
         last.next = other.head;
         other.head = null;
     }
+
+    // Assumes both lists are already sorted in ascending order.
+    public void merge(SinglyLinkedList other) {
+        Objects.requireNonNull(other, "other list is null");
+        if (other == this) {
+            throw new IllegalArgumentException("Cannot merge a list with itself");
+        }
+        if (other.head == null) {
+            return;
+        }
+        if (head == null) {
+            head = other.head;
+            other.head = null;
+            return;
+        }
+        Node mergedHead;
+        if (head.data <= other.head.data) {
+            mergedHead = head;
+            head = head.next;
+        } else {
+            mergedHead = other.head;
+            other.head = other.head.next;
+        }
+        Node last = mergedHead;
+        while (head != null && other.head != null) {
+            Node picked;
+            if (head.data <= other.head.data) {
+                picked = head;
+                head = head.next;
+            } else {
+                picked = other.head;
+                other.head = other.head.next;
+            }
+            last.next = picked;
+            last = picked;
+        }
+        if (head == null) {
+            last.next = other.head;
+        } else {
+            last.next = head;
+        }
+        head = mergedHead;
+        other.head = null;
+    }
 }
