@@ -111,18 +111,57 @@ public class SinglyLinkedList {
 
     // Assumes the list is already sorted in ascending order. Puts data before the first bigger value.
     public void sortedInsert(int data) {
+        insertNodeSorted(new Node(data));
+    }
+
+    public void insertionSort() {
+        Node unsortedHead = head;
+        head = null;
+        while (unsortedHead != null) {
+            Node current = unsortedHead;
+            unsortedHead = unsortedHead.next;
+            insertNodeSorted(current);
+        }
+    }
+
+    // Same result as insertionSort(), but finds the place for each node inside this method.
+    public void insertionSortInline() {
+        if (head == null) {
+            return;
+        }
+        Node unsortedHead = head.next;
+        head.next = null;
+        while (unsortedHead != null) {
+            Node current = unsortedHead;
+            unsortedHead = unsortedHead.next;
+            Node currentSorted = head;
+            Node prevSorted = null;
+            while (currentSorted != null && currentSorted.data <= current.data) {
+                prevSorted = currentSorted;
+                currentSorted = currentSorted.next;
+            }
+            current.next = currentSorted;
+            if (prevSorted != null) {
+                prevSorted.next = current;
+            } else {
+                head = current;
+            }
+        }
+    }
+
+    // Links an existing node into the sorted list that starts at head.
+    private void insertNodeSorted(Node node) {
         Node prev = null;
         Node current = head;
-        while (current != null && current.data <= data) {
+        while (current != null && current.data <= node.data) {
             prev = current;
             current = current.next;
         }
-        Node newNode = new Node(data);
-        newNode.next = current;
+        node.next = current;
         if (prev == null) {
-            head = newNode;
+            head = node;
         } else {
-            prev.next = newNode;
+            prev.next = node;
         }
     }
 }

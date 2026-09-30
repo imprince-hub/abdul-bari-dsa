@@ -92,5 +92,32 @@ public class LinkedListFunctionsDemo {
         emptyForInsert.sortedInsert(5);
         System.out.print("sortedInsert(5) on empty list = ");
         emptyForInsert.display();
+
+        System.out.println();
+        SinglyLinkedList toSort = new SinglyLinkedList();
+        toSort.create(new int[]{5, 2, 9, 1, 5, 7});
+        System.out.print("before insertionSort = ");
+        toSort.display();
+        toSort.insertionSort();
+        System.out.print("after insertionSort = ");
+        toSort.display();
+
+        SinglyLinkedList toSortInline = new SinglyLinkedList();
+        toSortInline.create(new int[]{5, 2, 9, 1, 5, 7});
+        System.out.print("before insertionSortInline = ");
+        toSortInline.display();
+        toSortInline.insertionSortInline();
+        System.out.print("after insertionSortInline = ");
+        toSortInline.display();
+
+        SinglyLinkedList emptyToSort = new SinglyLinkedList();
+        emptyToSort.insertionSort();
+        System.out.print("insertionSort on empty list = ");
+        emptyToSort.display();
+
+        SinglyLinkedList emptyToSortInline = new SinglyLinkedList();
+        emptyToSortInline.insertionSortInline();
+        System.out.print("insertionSortInline on empty list = ");
+        emptyToSortInline.display();
     }
 }
