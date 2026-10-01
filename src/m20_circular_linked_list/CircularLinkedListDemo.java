@@ -21,5 +21,25 @@ public class CircularLinkedListDemo {
         System.out.print("emptyList = ");
         emptyList.display();
         System.out.println("length = " + emptyList.length());
+
+        System.out.println();
+        CircularLinkedList toInsert = new CircularLinkedList();
+        toInsert.create(new int[]{1, 2, 3});
+        System.out.print("before insert = ");
+        toInsert.display();
+        toInsert.insert(0, 0);
+        System.out.print("after insert(0, 0) head = ");
+        toInsert.display();
+        toInsert.insert(2, 9);
+        System.out.print("after insert(2, 9) middle = ");
+        toInsert.display();
+        toInsert.insert(5, 4);
+        System.out.print("after insert(5, 4) end = ");
+        toInsert.display();
+
+        CircularLinkedList emptyForInsert = new CircularLinkedList();
+        emptyForInsert.insert(0, 5);
+        System.out.print("insert(0, 5) on empty list = ");
+        emptyForInsert.display();
     }
 }

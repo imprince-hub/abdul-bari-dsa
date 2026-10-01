@@ -44,4 +44,38 @@ public class CircularLinkedList {
         } while (current != head);
         return count;
     }
+
+    public void insert(int index, int data) {
+        if (index < 0 || index > length()) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+        Node newNode = new Node(data);
+        if (head == null) {
+            newNode.next = newNode;
+            head = newNode;
+            return;
+        }
+        if (index == 0) {
+            Node last = lastNode();
+            newNode.next = head;
+            last.next = newNode;
+            head = newNode;
+            return;
+        }
+        Node prev = head;
+        for (int i = 0; i < index - 1; i++) {
+            prev = prev.next;
+        }
+        newNode.next = prev.next;
+        prev.next = newNode;
+    }
+
+    // Returns the node whose next is head. Call only when the list is not empty.
+    private Node lastNode() {
+        Node last = head;
+        while (last.next != head) {
+            last = last.next;
+        }
+        return last;
+    }
 }
