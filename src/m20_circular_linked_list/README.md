@@ -1,6 +1,6 @@
 # 20. Circular Linked List
 
-Package: `m20_circular_linked_list` · 8 lectures
+Package: `m20_circular_linked_list` · 8 lectures · 2 done
 
 Put this line at the top of every file in this folder:
 
@@ -10,8 +10,8 @@ package m20_circular_linked_list;
 
 ## Introduction and Basic Operations
 
-- [ ] Circular LinkedList Traverse
-- [ ] Circular LinkedList Create Solution
+- [x] Circular LinkedList Traverse
+- [x] Circular LinkedList Create Solution
 
 ## Insertion and Deletion Operations
 
@@ -24,5 +24,14 @@ package m20_circular_linked_list;
 
 - [ ] Circular LinkedList Sentiniel Node
 - [ ] Circular LinkedList Class - Solution
+
+## Code in this folder
+
+| File | What it has |
+|------|-------------|
+| `Node.java` | One node: `data`, `next`, and a constructor (copy of the m19 `Node`) |
+| `CircularLinkedList.java` | `create(int[])` links the last node back to `head` (rejects `null`); `display()` and `length()` walk with a do-while loop and stop when they come back to `head` |
+| `SentinelCircularLinkedList.java` | Circular list with a dummy `sentinel` node. Empty for now |
+| `CircularLinkedListDemo.java` | `main()` that displays a five-node list, a one-node list and an empty list with their lengths |
 
 [Back to all modules](../../README.md)
