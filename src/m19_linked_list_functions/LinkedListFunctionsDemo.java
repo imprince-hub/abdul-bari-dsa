@@ -168,5 +168,17 @@ public class LinkedListFunctionsDemo {
         firstSortedList.display();
         System.out.print("after firstSortedList.merge(secondSortedList), secondSortedList = ");
         secondSortedList.display();
+
+        System.out.println();
+        Node noLoop = NodeUtils.create(new int[]{1, 2, 3, 4, 5});
+        System.out.println("hasLoop(1 2 3 4 5) = " + NodeUtils.hasLoop(noLoop));
+        System.out.println("hasLoop(empty) = " + NodeUtils.hasLoop(null));
+
+        Node withLoop = NodeUtils.create(new int[]{1, 2, 3, 4, 5});
+        Node third = withLoop.next.next;
+        Node fifth = third.next.next;
+        fifth.next = third;
+        // Do not call display() on withLoop: it would never stop.
+        System.out.println("hasLoop(1 2 3 4 5, 5 linked back to 3) = " + NodeUtils.hasLoop(withLoop));
     }
 }

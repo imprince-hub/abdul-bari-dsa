@@ -84,4 +84,18 @@ public class NodeUtils {
         }
         return mergedHead;
     }
+
+    // Floyd's cycle algorithm: slow moves 1 step and fast moves 2 steps. They can meet only if the chain has a loop.
+    public static boolean hasLoop(Node head) {
+        Node slow = head;
+        Node fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
