@@ -1,5 +1,7 @@
 package m20_circular_linked_list;
 
+import java.util.NoSuchElementException;
+
 public class CircularLinkedListDemo {
     public static void main(String[] args) {
         CircularLinkedList list = new CircularLinkedList();
@@ -41,5 +43,32 @@ public class CircularLinkedListDemo {
         emptyForInsert.insert(0, 5);
         System.out.print("insert(0, 5) on empty list = ");
         emptyForInsert.display();
+
+        System.out.println();
+        CircularLinkedList toDelete = new CircularLinkedList();
+        toDelete.create(new int[]{1, 2, 3, 4, 5});
+        System.out.print("before delete = ");
+        toDelete.display();
+        System.out.println("delete(0) head = " + toDelete.delete(0));
+        System.out.println("delete(1) middle = " + toDelete.delete(1));
+        System.out.println("delete(2) last = " + toDelete.delete(2));
+        System.out.print("after deletes = ");
+        toDelete.display();
+        try {
+            toDelete.delete(5);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("delete(5) = " + e.getMessage());
+        }
+
+        CircularLinkedList oneNodeToDelete = new CircularLinkedList();
+        oneNodeToDelete.create(new int[]{7});
+        System.out.println("delete(0) on one node list = " + oneNodeToDelete.delete(0));
+        System.out.print("after delete, one node list = ");
+        oneNodeToDelete.display();
+        try {
+            oneNodeToDelete.delete(0);
+        } catch (NoSuchElementException e) {
+            System.out.println("delete(0) on empty list = " + e.getMessage());
+        }
     }
 }

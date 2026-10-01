@@ -1,5 +1,6 @@
 package m20_circular_linked_list;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class CircularLinkedList {
@@ -77,5 +78,32 @@ public class CircularLinkedList {
             last = last.next;
         }
         return last;
+    }
+
+    public int delete(int index) {
+        if (head == null) {
+            throw new NoSuchElementException("List is empty");
+        }
+        if (index < 0 || index >= length()) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+        if (index == 0) {
+            int deletedValue = head.data;
+            if (head.next == head) {
+                head = null;
+                return deletedValue;
+            }
+            Node last = lastNode();
+            head = head.next;
+            last.next = head;
+            return deletedValue;
+        }
+        Node prev = head;
+        for (int i = 0; i < index - 1; i++) {
+            prev = prev.next;
+        }
+        Node deletedNode = prev.next;
+        prev.next = deletedNode.next;
+        return deletedNode.data;
     }
 }
