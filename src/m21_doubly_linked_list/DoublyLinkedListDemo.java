@@ -35,5 +35,38 @@ public class DoublyLinkedListDemo {
         System.out.print("list reversed = ");
         list.displayReverse();
         System.out.println("length = " + list.length());
+
+        System.out.println();
+        DoublyLinkedList toInsert = new DoublyLinkedList();
+        toInsert.create(new int[]{1, 2, 3});
+        System.out.print("before insert = ");
+        toInsert.display();
+        toInsert.insert(0, 0);
+        System.out.print("after insert(0, 0) head = ");
+        toInsert.display();
+        System.out.print("reversed = ");
+        toInsert.displayReverse();
+        toInsert.insert(2, 9);
+        System.out.print("after insert(2, 9) middle = ");
+        toInsert.display();
+        System.out.print("reversed = ");
+        toInsert.displayReverse();
+        toInsert.insert(5, 4);
+        System.out.print("after insert(5, 4) end = ");
+        toInsert.display();
+        System.out.print("reversed = ");
+        toInsert.displayReverse();
+
+        DoublyLinkedList emptyForInsert = new DoublyLinkedList();
+        emptyForInsert.insert(0, 5);
+        System.out.print("insert(0, 5) on empty list = ");
+        emptyForInsert.display();
+        System.out.print("reversed = ");
+        emptyForInsert.displayReverse();
+        try {
+            emptyForInsert.insert(3, 1);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("insert(3, 1) = " + e.getMessage());
+        }
     }
 }

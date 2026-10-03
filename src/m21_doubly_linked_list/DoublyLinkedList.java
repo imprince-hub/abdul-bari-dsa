@@ -61,4 +61,37 @@ public class DoublyLinkedList {
         }
         return count;
     }
+
+    public void insert(int index, int data) {
+        if (index < 0 || index > length()) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+        Node newNode = new Node(data);
+        if (index == 0) {
+            if (head == null) {
+                head = newNode;
+                return;
+            }
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+            return;
+        }
+        Node before = nodeAt(index - 1);
+        newNode.next = before.next;
+        if (before.next != null) {
+            before.next.prev = newNode;
+        }
+        before.next = newNode;
+        newNode.prev = before;
+    }
+
+    // Returns the node at position index. Call only after the index is checked.
+    private Node nodeAt(int index) {
+        Node current = head;
+        for (int i = 0; i < index; i++) {
+            current = current.next;
+        }
+        return current;
+    }
 }
