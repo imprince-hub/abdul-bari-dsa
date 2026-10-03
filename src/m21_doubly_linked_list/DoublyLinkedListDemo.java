@@ -107,5 +107,57 @@ public class DoublyLinkedListDemo {
         } catch (NoSuchElementException e) {
             System.out.println("delete(0) on empty list = " + e.getMessage());
         }
+
+        System.out.println();
+        System.out.println("Circular doubly version");
+        CircularDoublyLinkedList circularList = new CircularDoublyLinkedList();
+        circularList.create(new int[]{1, 2, 3, 4, 5});
+        System.out.print("circularList = ");
+        circularList.display();
+        System.out.print("circularList reversed = ");
+        circularList.displayReverse();
+        System.out.println("length = " + circularList.length());
+
+        CircularDoublyLinkedList circularEmptyList = new CircularDoublyLinkedList();
+        circularEmptyList.create(new int[]{});
+        System.out.print("circularEmptyList = ");
+        circularEmptyList.display();
+        System.out.print("circularEmptyList reversed = ");
+        circularEmptyList.displayReverse();
+        System.out.println("length = " + circularEmptyList.length());
+
+        System.out.println();
+        CircularDoublyLinkedList circularToInsert = new CircularDoublyLinkedList();
+        circularToInsert.create(new int[]{1, 2, 3});
+        System.out.print("before insert = ");
+        circularToInsert.display();
+        circularToInsert.insert(0, 0);
+        System.out.print("after insert(0, 0) head = ");
+        circularToInsert.display();
+        System.out.print("reversed = ");
+        circularToInsert.displayReverse();
+        circularToInsert.insert(2, 9);
+        System.out.print("after insert(2, 9) middle = ");
+        circularToInsert.display();
+        System.out.print("reversed = ");
+        circularToInsert.displayReverse();
+        circularToInsert.insert(5, 4);
+        System.out.print("after insert(5, 4) end = ");
+        circularToInsert.display();
+        System.out.print("reversed = ");
+        circularToInsert.displayReverse();
+
+        CircularDoublyLinkedList circularEmptyForInsert = new CircularDoublyLinkedList();
+        circularEmptyForInsert.insert(0, 5);
+        System.out.print("insert(0, 5) on empty list = ");
+        circularEmptyForInsert.display();
+        System.out.print("reversed = ");
+        circularEmptyForInsert.displayReverse();
+        System.out.println("length = " + circularEmptyForInsert.length());
+        try {
+            circularEmptyForInsert.insert(3, 1);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("insert(3, 1) = " + e.getMessage());
+        }
     }
 }
