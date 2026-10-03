@@ -1,5 +1,7 @@
 package m21_doubly_linked_list;
 
+import java.util.NoSuchElementException;
+
 public class DoublyLinkedListDemo {
     public static void main(String[] args) {
         DoublyLinkedList list = new DoublyLinkedList();
@@ -67,6 +69,43 @@ public class DoublyLinkedListDemo {
             emptyForInsert.insert(3, 1);
         } catch (IndexOutOfBoundsException e) {
             System.out.println("insert(3, 1) = " + e.getMessage());
+        }
+
+        System.out.println();
+        DoublyLinkedList toDelete = new DoublyLinkedList();
+        toDelete.create(new int[]{1, 2, 3, 4, 5});
+        System.out.print("before delete = ");
+        toDelete.display();
+        System.out.println("delete(0) head = " + toDelete.delete(0));
+        System.out.print("list = ");
+        toDelete.display();
+        System.out.print("reversed = ");
+        toDelete.displayReverse();
+        System.out.println("delete(1) middle = " + toDelete.delete(1));
+        System.out.print("list = ");
+        toDelete.display();
+        System.out.print("reversed = ");
+        toDelete.displayReverse();
+        System.out.println("delete(2) last = " + toDelete.delete(2));
+        System.out.print("list = ");
+        toDelete.display();
+        System.out.print("reversed = ");
+        toDelete.displayReverse();
+        try {
+            toDelete.delete(2);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("delete(2) = " + e.getMessage());
+        }
+
+        DoublyLinkedList oneNodeToDelete = new DoublyLinkedList();
+        oneNodeToDelete.create(new int[]{7});
+        System.out.println("delete(0) on one node list = " + oneNodeToDelete.delete(0));
+        System.out.print("after delete, one node list = ");
+        oneNodeToDelete.display();
+        try {
+            oneNodeToDelete.delete(0);
+        } catch (NoSuchElementException e) {
+            System.out.println("delete(0) on empty list = " + e.getMessage());
         }
     }
 }

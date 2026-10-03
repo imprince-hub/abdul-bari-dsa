@@ -1,5 +1,6 @@
 package m21_doubly_linked_list;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class DoublyLinkedList {
@@ -93,5 +94,27 @@ public class DoublyLinkedList {
             current = current.next;
         }
         return current;
+    }
+
+    public int delete(int index) {
+        if (head == null) {
+            throw new NoSuchElementException("List is empty");
+        }
+        if (index < 0 || index >= length()) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+        Node deletedNode = nodeAt(index);
+        if (index == 0) {
+            head = head.next;
+            if (head != null) {
+                head.prev = null;
+            }
+            return deletedNode.data;
+        }
+        deletedNode.prev.next = deletedNode.next;
+        if (deletedNode.next != null) {
+            deletedNode.next.prev = deletedNode.prev;
+        }
+        return deletedNode.data;
     }
 }
