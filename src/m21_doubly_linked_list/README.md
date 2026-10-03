@@ -1,6 +1,6 @@
 # 21. Doubly Linked List
 
-Package: `m21_doubly_linked_list` · 9 lectures · 1 done
+Package: `m21_doubly_linked_list` · 9 lectures · 2 done
 
 Put this line at the top of every file in this folder:
 
@@ -11,7 +11,7 @@ package m21_doubly_linked_list;
 ## Basic Operations on Doubly Linked List
 
 - [x] Doubly LinkedList Traverse
-- [ ] Doubly LinkedList Create - Solution
+- [x] Doubly LinkedList Create - Solution
 - [ ] Doubly LinkedList Insert
 - [ ] Doubly LinkedList Insert - Solution
 
@@ -31,8 +31,8 @@ package m21_doubly_linked_list;
 | File | What it has |
 |------|-------------|
 | `Node.java` | One node: `data`, `next`, `prev`, and a constructor |
-| `DoublyLinkedList.java` | `display()` walks forward with `next`; `displayReverse()` goes to the last node (private helper `lastNode()`) and walks back with `prev`, and prints only a newline for an empty list; `length()` counts the nodes |
+| `DoublyLinkedList.java` | `create(int[])` makes the first node the `head`, then links each new node both ways (`last.next` and `newNode.prev`); it replaces any old list, an empty array gives an empty list, and `null` is rejected; `display()` walks forward with `next`; `displayReverse()` goes to the last node (private helper `lastNode()`) and walks back with `prev`, and prints only a newline for an empty list; `length()` counts the nodes |
 | `CircularDoublyLinkedList.java` | Empty for now (lectures 8-9) |
-| `DoublyLinkedListDemo.java` | Empty for now; `main()` comes with `create` in the next lecture |
+| `DoublyLinkedListDemo.java` | `main()` that creates a five-node list, a one-node list and an empty list and prints each one forward, reversed and its length, then calls `create` again on the five-node list to show the old nodes are replaced |
 
 [Back to all modules](../../README.md)

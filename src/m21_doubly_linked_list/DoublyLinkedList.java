@@ -1,7 +1,25 @@
 package m21_doubly_linked_list;
 
+import java.util.Objects;
+
 public class DoublyLinkedList {
     private Node head;
+
+    public void create(int[] arr) {
+        Objects.requireNonNull(arr, "arr is null");
+        if (arr.length == 0) {
+            head = null;
+            return;
+        }
+        head = new Node(arr[0]);
+        Node last = head;
+        for (int i = 1; i < arr.length; i++) {
+            Node newNode = new Node(arr[i]);
+            last.next = newNode;
+            newNode.prev = last;
+            last = newNode;
+        }
+    }
 
     public void display() {
         Node current = head;
