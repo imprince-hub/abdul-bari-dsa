@@ -1,5 +1,6 @@
 package m21_doubly_linked_list;
 
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public class CircularDoublyLinkedList {
@@ -92,5 +93,26 @@ public class CircularDoublyLinkedList {
             current = current.next;
         }
         return current;
+    }
+
+    public int delete(int index) {
+        if (head == null) {
+            throw new NoSuchElementException("List is empty");
+        }
+        if (index < 0 || index >= length()) {
+            throw new IndexOutOfBoundsException("Invalid index: " + index);
+        }
+        if (head.next == head) {
+            int deletedValue = head.data;
+            head = null;
+            return deletedValue;
+        }
+        Node deletedNode = nodeAt(index);
+        deletedNode.prev.next = deletedNode.next;
+        deletedNode.next.prev = deletedNode.prev;
+        if (index == 0) {
+            head = deletedNode.next;
+        }
+        return deletedNode.data;
     }
 }

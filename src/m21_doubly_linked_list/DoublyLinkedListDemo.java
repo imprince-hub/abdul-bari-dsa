@@ -159,5 +159,44 @@ public class DoublyLinkedListDemo {
         } catch (IndexOutOfBoundsException e) {
             System.out.println("insert(3, 1) = " + e.getMessage());
         }
+
+        System.out.println();
+        CircularDoublyLinkedList circularToDelete = new CircularDoublyLinkedList();
+        circularToDelete.create(new int[]{1, 2, 3, 4, 5});
+        System.out.print("before delete = ");
+        circularToDelete.display();
+        System.out.println("delete(0) head = " + circularToDelete.delete(0));
+        System.out.print("list = ");
+        circularToDelete.display();
+        System.out.print("reversed = ");
+        circularToDelete.displayReverse();
+        System.out.println("delete(1) middle = " + circularToDelete.delete(1));
+        System.out.print("list = ");
+        circularToDelete.display();
+        System.out.print("reversed = ");
+        circularToDelete.displayReverse();
+        System.out.println("delete(2) last = " + circularToDelete.delete(2));
+        System.out.print("list = ");
+        circularToDelete.display();
+        System.out.print("reversed = ");
+        circularToDelete.displayReverse();
+        System.out.println("length = " + circularToDelete.length());
+        try {
+            circularToDelete.delete(2);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("delete(2) = " + e.getMessage());
+        }
+
+        CircularDoublyLinkedList circularOneNodeToDelete = new CircularDoublyLinkedList();
+        circularOneNodeToDelete.create(new int[]{7});
+        System.out.println("delete(0) on one node list = " + circularOneNodeToDelete.delete(0));
+        System.out.print("after delete, one node list = ");
+        circularOneNodeToDelete.display();
+        System.out.println("length = " + circularOneNodeToDelete.length());
+        try {
+            circularOneNodeToDelete.delete(0);
+        } catch (NoSuchElementException e) {
+            System.out.println("delete(0) on empty list = " + e.getMessage());
+        }
     }
 }
