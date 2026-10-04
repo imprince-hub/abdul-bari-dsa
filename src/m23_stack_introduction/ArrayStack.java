@@ -1,5 +1,7 @@
 package m23_stack_introduction;
 
+import java.util.NoSuchElementException;
+
 public class ArrayStack {
     private final int[] elements;
     private int top = -1; // index of the top element, -1 means empty
@@ -19,20 +21,33 @@ public class ArrayStack {
     }
 
     public int pop() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Stack underflow");
+        }
+        return elements[top--];
     }
 
     // position 1 = top
     public int peek(int position) {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Stack underflow");
+        }
+        if (position < 1 || position > size()) {
+            throw new IndexOutOfBoundsException("Invalid position: " + position);
+        }
+        int index = top - position + 1;
+        return elements[index];
     }
 
     public int stackTop() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Stack underflow");
+        }
+        return elements[top];
     }
 
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("TODO");
+        return top == -1;
     }
 
     public boolean isFull() {
@@ -40,11 +55,14 @@ public class ArrayStack {
     }
 
     public int size() {
-        throw new UnsupportedOperationException("TODO");
+        return top + 1;
     }
 
     // prints from top to bottom
     public void display() {
-        throw new UnsupportedOperationException("TODO");
+        for (int i = top; i >= 0; i--) {
+            System.out.print(elements[i] + " ");
+        }
+        System.out.println();
     }
 }
