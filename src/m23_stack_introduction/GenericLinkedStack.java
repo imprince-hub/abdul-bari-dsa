@@ -12,7 +12,12 @@ public class GenericLinkedStack<T> {
     }
 
     private Node<T> top; // head of the list is the top of the stack
-    private int size;
+    private int size; // number of elements in the stack
+    private final int capacity; // max number of elements
+
+    public GenericLinkedStack(int capacity) {
+        throw new UnsupportedOperationException("TODO");
+    }
 
     public void push(T value) {
         throw new UnsupportedOperationException("TODO");
@@ -32,6 +37,10 @@ public class GenericLinkedStack<T> {
     }
 
     public boolean isEmpty() {
+        throw new UnsupportedOperationException("TODO");
+    }
+
+    public boolean isFull() {
         throw new UnsupportedOperationException("TODO");
     }
 

@@ -158,6 +158,82 @@ public class StackDemo {
 
     private static void demoLinkedStack() {
         System.out.println("=== LinkedStack ===");
+        LinkedStack stack = new LinkedStack(4);
+        System.out.println("new stack(4): isEmpty = " + stack.isEmpty() + ", size = " + stack.size());
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+        System.out.print("after push 10, 20, 30 (top to bottom) = ");
+        stack.display();
+        System.out.println("size = " + stack.size());
+        System.out.println("stackTop = " + stack.stackTop());
+        System.out.println("peek(1) = " + stack.peek(1));
+        System.out.println("peek(2) = " + stack.peek(2));
+        System.out.println("peek(3) = " + stack.peek(3));
+        try {
+            stack.peek(0);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("peek(0) = " + e.getMessage());
+        }
+        try {
+            stack.peek(4);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("peek(4) = " + e.getMessage());
+        }
+
+        System.out.println();
+        System.out.println("pop = " + stack.pop());
+        System.out.print("after pop = ");
+        stack.display();
+        System.out.println("stackTop = " + stack.stackTop());
+
+        System.out.println();
+        stack.push(40);
+        stack.push(50);
+        System.out.print("after push 40, 50 = ");
+        stack.display();
+        System.out.println("isFull = " + stack.isFull() + ", size = " + stack.size());
+        try {
+            stack.push(60);
+        } catch (IllegalStateException e) {
+            System.out.println("push(60) on full stack = " + e.getMessage());
+        }
+
+        System.out.println();
+        System.out.print("pop all = ");
+        while (!stack.isEmpty()) {
+            System.out.print(stack.pop() + " ");
+        }
+        System.out.println();
+        System.out.println("isEmpty = " + stack.isEmpty() + ", size = " + stack.size());
+        System.out.print("display on empty stack = ");
+        stack.display();
+        try {
+            stack.pop();
+        } catch (NoSuchElementException e) {
+            System.out.println("pop on empty stack = " + e.getMessage());
+        }
+        try {
+            stack.stackTop();
+        } catch (NoSuchElementException e) {
+            System.out.println("stackTop on empty stack = " + e.getMessage());
+        }
+        try {
+            stack.peek(1);
+        } catch (NoSuchElementException e) {
+            System.out.println("peek(1) on empty stack = " + e.getMessage());
+        }
+
+        System.out.println();
+        LinkedStack oneSlot = new LinkedStack(1);
+        oneSlot.push(-7);
+        System.out.println("stack(1) after push(-7): isFull = " + oneSlot.isFull() + ", stackTop = " + oneSlot.stackTop());
+        try {
+            new LinkedStack(0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("new LinkedStack(0) = " + e.getMessage());
+        }
+        System.out.println();
     }
 
     private static void demoGenericLinkedStack() {
