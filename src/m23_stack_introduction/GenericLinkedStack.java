@@ -1,5 +1,8 @@
 package m23_stack_introduction;
 
+import java.util.NoSuchElementException;
+import java.util.Objects;
+
 public class GenericLinkedStack<T> {
 
     private static class Node<T> {
@@ -16,40 +19,74 @@ public class GenericLinkedStack<T> {
     private final int capacity; // max number of elements
 
     public GenericLinkedStack(int capacity) {
-        throw new UnsupportedOperationException("TODO");
+        if (capacity <= 0) {
+            throw new IllegalArgumentException("Capacity must be positive: " + capacity);
+        }
+        this.capacity = capacity;
     }
 
     public void push(T value) {
-        throw new UnsupportedOperationException("TODO");
+        Objects.requireNonNull(value, "null elements are not allowed");
+        if (isFull()) {
+            throw new IllegalStateException("Stack overflow");
+        }
+        Node<T> newNode = new Node<>(value);
+        newNode.next = top;
+        top = newNode;
+        size++;
     }
 
     public T pop() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Stack underflow");
+        }
+        T poppedValue = top.data;
+        top = top.next;
+        size--;
+        return poppedValue;
     }
 
     // position 1 = top
     public T peek(int position) {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Stack underflow");
+        }
+        if (position < 1 || position > size) {
+            throw new IndexOutOfBoundsException("Invalid position: " + position);
+        }
+        Node<T> current = top;
+        for (int i = 1; i < position; i++) {
+            current = current.next;
+        }
+        return current.data;
     }
 
     public T stackTop() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Stack underflow");
+        }
+        return top.data;
     }
 
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("TODO");
+        return size == 0;
     }
 
     public boolean isFull() {
-        throw new UnsupportedOperationException("TODO");
+        return size == capacity;
     }
 
     public int size() {
-        throw new UnsupportedOperationException("TODO");
+        return size;
     }
 
     // prints from top to bottom
     public void display() {
-        throw new UnsupportedOperationException("TODO");
+        Node<T> current = top;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+        System.out.println();
     }
 }

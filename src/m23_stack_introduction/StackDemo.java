@@ -238,5 +238,65 @@ public class StackDemo {
 
     private static void demoGenericLinkedStack() {
         System.out.println("=== GenericLinkedStack ===");
+        GenericLinkedStack<String> fruits = new GenericLinkedStack<>(3);
+        fruits.push("apple");
+        fruits.push("mango");
+        fruits.push("banana");
+        System.out.print("after push apple, mango, banana (top to bottom) = ");
+        fruits.display();
+        System.out.println("size = " + fruits.size() + ", isFull = " + fruits.isFull());
+        System.out.println("stackTop = " + fruits.stackTop());
+        System.out.println("peek(2) = " + fruits.peek(2));
+        System.out.println("peek(3) = " + fruits.peek(3));
+        try {
+            fruits.peek(4);
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("peek(4) = " + e.getMessage());
+        }
+        try {
+            fruits.push("grapes");
+        } catch (IllegalStateException e) {
+            System.out.println("push(\"grapes\") on full stack = " + e.getMessage());
+        }
+
+        System.out.println();
+        System.out.println("pop = " + fruits.pop());
+        System.out.print("after pop = ");
+        fruits.display();
+        try {
+            fruits.push(null);
+        } catch (NullPointerException e) {
+            System.out.println("push(null) = " + e.getMessage());
+        }
+
+        System.out.println();
+        System.out.print("pop all = ");
+        while (!fruits.isEmpty()) {
+            System.out.print(fruits.pop() + " ");
+        }
+        System.out.println();
+        System.out.println("isEmpty = " + fruits.isEmpty() + ", size = " + fruits.size());
+        try {
+            fruits.pop();
+        } catch (NoSuchElementException e) {
+            System.out.println("pop on empty stack = " + e.getMessage());
+        }
+        try {
+            fruits.peek(1);
+        } catch (NoSuchElementException e) {
+            System.out.println("peek(1) on empty stack = " + e.getMessage());
+        }
+
+        System.out.println();
+        GenericLinkedStack<Integer> numbers = new GenericLinkedStack<>(2);
+        numbers.push(-5);
+        numbers.push(Integer.MAX_VALUE);
+        System.out.print("Integer stack after push -5, MAX_VALUE = ");
+        numbers.display();
+        try {
+            new GenericLinkedStack<String>(0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("new GenericLinkedStack<String>(0) = " + e.getMessage());
+        }
     }
 }
