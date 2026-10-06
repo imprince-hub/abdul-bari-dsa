@@ -54,6 +54,32 @@ public class ExpressionDemo {
 
     private static void demoPostfixEvaluator() {
         System.out.println("=== PostfixEvaluator ===");
+        String[] expressions = {"234*+82/-", "83-", "72/", "35-2*", "5"};
+        for (String postfix : expressions) {
+            System.out.println("evaluate(\"" + postfix + "\") = " + PostfixEvaluator.evaluate(postfix));
+        }
+        String infix = "(2+3)*4";
+        String postfix = InfixToPostfixAssociative.convert(infix);
+        System.out.println("evaluate(convert(\"" + infix + "\")) = evaluate(\"" + postfix + "\") = " + PostfixEvaluator.evaluate(postfix));
+        String[] invalidExpressions = {"", "+", "2+", "23", "2a+"};
+        for (String invalid : invalidExpressions) {
+            try {
+                System.out.println("evaluate(\"" + invalid + "\") = " + PostfixEvaluator.evaluate(invalid));
+            } catch (IllegalArgumentException e) {
+                System.out.println("evaluate(\"" + invalid + "\") = " + e.getMessage());
+            }
+        }
+        try {
+            PostfixEvaluator.evaluate("50/");
+        } catch (ArithmeticException e) {
+            System.out.println("evaluate(\"50/\") = " + e.getMessage());
+        }
+        try {
+            PostfixEvaluator.evaluate(null);
+        } catch (NullPointerException e) {
+            System.out.println("evaluate(null) = " + e.getMessage());
+        }
+        System.out.println();
     }
 
     private static void demoBracketMatcher() {
