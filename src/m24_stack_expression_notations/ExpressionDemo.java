@@ -32,6 +32,24 @@ public class ExpressionDemo {
 
     private static void demoInfixToPostfixAssociative() {
         System.out.println("=== InfixToPostfixAssociative ===");
+        String[] expressions = {"a^b^c", "a-b-c", "a*b^c", "(a+b)*c", "a+(b*c)", "((a+b)*c-d)^e^f", "a", ""};
+        for (String infix : expressions) {
+            System.out.println("convert(\"" + infix + "\") = \"" + InfixToPostfixAssociative.convert(infix) + "\"");
+        }
+        String[] invalidExpressions = {"(a+b", "a+b)", ")", "a%b"};
+        for (String infix : invalidExpressions) {
+            try {
+                System.out.println("convert(\"" + infix + "\") = \"" + InfixToPostfixAssociative.convert(infix) + "\"");
+            } catch (IllegalArgumentException e) {
+                System.out.println("convert(\"" + infix + "\") = " + e.getMessage());
+            }
+        }
+        try {
+            InfixToPostfixAssociative.convert(null);
+        } catch (NullPointerException e) {
+            System.out.println("convert(null) = " + e.getMessage());
+        }
+        System.out.println();
     }
 
     private static void demoPostfixEvaluator() {
