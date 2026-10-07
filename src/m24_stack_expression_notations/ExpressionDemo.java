@@ -84,5 +84,19 @@ public class ExpressionDemo {
 
     private static void demoBracketMatcher() {
         System.out.println("=== BracketMatcher ===");
+        String[] parenthesesCases = {"((a+b)*(c-d))", "((a+b)", "a+b)", ")(", "abc", ""};
+        for (String expression : parenthesesCases) {
+            System.out.println("hasBalancedParentheses(\"" + expression + "\") = " + BracketMatcher.hasBalancedParentheses(expression));
+        }
+        String[] bracketCases = {"{([a+b]*[c-d])/e}", "{[()]}", "([)]", "{(})", "()(", "]", ""};
+        for (String expression : bracketCases) {
+            System.out.println("hasBalancedBrackets(\"" + expression + "\") = " + BracketMatcher.hasBalancedBrackets(expression));
+        }
+        try {
+            BracketMatcher.hasBalancedBrackets(null);
+        } catch (NullPointerException e) {
+            System.out.println("hasBalancedBrackets(null) = " + e.getMessage());
+        }
+        System.out.println();
     }
 }
