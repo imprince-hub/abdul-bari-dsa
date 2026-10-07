@@ -1,6 +1,6 @@
 # 24. Stack & Expression Notations
 
-Package: `m24_stack_expression_notations` · 13 lectures · 9 done
+Package: `m24_stack_expression_notations` · 13 lectures · 13 done
 
 Put this line at the top of every file in this folder:
 
@@ -28,10 +28,10 @@ package m24_stack_expression_notations;
 
 ## Parentheses and Bracket Matching
 
-- [ ] Parantheses Matching using Stack
-- [ ] Parantheses Matching using Stack - Solution
-- [ ] Brackets Matching Using Stack
-- [ ] Brackets Matching Using Stack - Solution
+- [x] Parantheses Matching using Stack
+- [x] Parantheses Matching using Stack - Solution
+- [x] Brackets Matching Using Stack
+- [x] Brackets Matching Using Stack - Solution
 
 ## Code in this folder
 
