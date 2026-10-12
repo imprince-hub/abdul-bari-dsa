@@ -1,12 +1,15 @@
 package m25_stack_techniques;
 
 import java.util.Arrays;
+import java.util.EmptyStackException;
 import java.util.List;
+import java.util.Stack;
 
 public class StackTechniquesDemo {
     public static void main(String[] args) {
         demoNextGreaterElement();
         demoTowerOfHanoi();
+        demoBuiltInStack();
     }
 
     // eight arrays: each one printed with the stack result and checked against brute force,
@@ -67,6 +70,38 @@ public class StackTechniquesDemo {
             } catch (IllegalArgumentException e) {
                 System.out.println("movesIterative(" + disks + ") = " + e.getMessage());
             }
+        }
+        System.out.println();
+    }
+
+    // lecture 4, java.util.Stack<Integer>: push, print (bottom to top), peek, size, search, pop until empty,
+    // then pop() and peek() on the empty stack, which throw EmptyStackException
+    // (our m23 stacks throw NoSuchElementException("Stack underflow") instead).
+    // EmptyStackException's getMessage() is null, so its name is printed, not its message.
+    private static void demoBuiltInStack() {
+        System.out.println("=== java.util.Stack ===");
+        Stack<Integer> stack = new Stack<>();
+        stack.push(10);
+        stack.push(20);
+        stack.push(30);
+        System.out.println("after push 10, 20, 30: " + stack + " (printed bottom to top)");
+        System.out.println("peek() = " + stack.peek() + ", stack is still " + stack);
+        System.out.println("size() = " + stack.size());
+        System.out.println("search(10) = " + stack.search(10) + " (position from the top, starting at 1)");
+        System.out.println("search(99) = " + stack.search(99) + " (not in the stack)");
+        while (!stack.empty()) {
+            System.out.println("pop() = " + stack.pop());
+        }
+        System.out.println("empty() = " + stack.empty());
+        try {
+            stack.pop();
+        } catch (EmptyStackException e) {
+            System.out.println("pop() on an empty stack = " + e.getClass().getSimpleName());
+        }
+        try {
+            stack.peek();
+        } catch (EmptyStackException e) {
+            System.out.println("peek() on an empty stack = " + e.getClass().getSimpleName());
         }
         System.out.println();
     }
