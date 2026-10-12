@@ -1,10 +1,12 @@
 package m25_stack_techniques;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class StackTechniquesDemo {
     public static void main(String[] args) {
         demoNextGreaterElement();
+        demoTowerOfHanoi();
     }
 
     // eight arrays: each one printed with the stack result and checked against brute force,
@@ -32,6 +34,39 @@ public class StackTechniquesDemo {
             NextGreaterElement.nextGreaterIndices(null);
         } catch (NullPointerException e) {
             System.out.println("nextGreaterIndices(null) = " + e.getMessage());
+        }
+        System.out.println();
+    }
+
+    // 0 to 3 disks: the moves from both versions and whether they agree,
+    // 10 disks: only the number of moves and whether they agree, then the errors for -1 and 21 disks
+    private static void demoTowerOfHanoi() {
+        System.out.println("=== TowerOfHanoi ===");
+        for (int disks = 0; disks <= 3; disks++) {
+            List<String> recursiveMoves = TowerOfHanoi.movesRecursive(disks);
+            List<String> iterativeMoves = TowerOfHanoi.movesIterative(disks);
+            System.out.println(disks + " disks, recursive: " + recursiveMoves);
+            System.out.println(disks + " disks, iterative: " + iterativeMoves);
+            System.out.println("recursive and iterative agree: " + recursiveMoves.equals(iterativeMoves));
+            System.out.println();
+        }
+        List<String> recursiveMoves = TowerOfHanoi.movesRecursive(10);
+        List<String> iterativeMoves = TowerOfHanoi.movesIterative(10);
+        System.out.println("10 disks: " + recursiveMoves.size() + " moves");
+        System.out.println("recursive and iterative agree: " + recursiveMoves.equals(iterativeMoves));
+        System.out.println();
+        int[] invalidDisks = {-1, 21};
+        for (int disks : invalidDisks) {
+            try {
+                TowerOfHanoi.movesRecursive(disks);
+            } catch (IllegalArgumentException e) {
+                System.out.println("movesRecursive(" + disks + ") = " + e.getMessage());
+            }
+            try {
+                TowerOfHanoi.movesIterative(disks);
+            } catch (IllegalArgumentException e) {
+                System.out.println("movesIterative(" + disks + ") = " + e.getMessage());
+            }
         }
         System.out.println();
     }
