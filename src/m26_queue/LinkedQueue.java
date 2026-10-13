@@ -1,5 +1,7 @@
 package m26_queue;
 
+import java.util.NoSuchElementException;
+
 // Lectures 10 and 11. int queue on a singly linked list.
 // front is the first node (dequeue side) and rear is the last node (enqueue side).
 // Both are null when the queue is empty, and both point to the same node when it has one element.
@@ -12,37 +14,64 @@ public class LinkedQueue {
 
     // adds a new node after rear
     public void enqueue(int value) {
-        throw new UnsupportedOperationException("TODO");
+        Node newNode = new Node(value);
+        if (isEmpty()) {
+            front = rear = newNode;
+        } else {
+            rear.next = newNode;
+            rear = newNode;
+        }
+        size++;
     }
 
     // removes the front node
     // empty queue throws NoSuchElementException("Queue is empty")
     public int dequeue() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        int value = front.data;
+        front = front.next;
+        if (front == null) {
+            rear = null;
+        }
+        size--;
+        return value;
     }
 
     // first element, removes nothing
     // empty queue throws NoSuchElementException("Queue is empty")
     public int first() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        return front.data;
     }
 
     // last element, removes nothing
     // empty queue throws NoSuchElementException("Queue is empty")
     public int last() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        return rear.data;
     }
 
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("TODO");
+        return front == null;
     }
 
     public int size() {
-        throw new UnsupportedOperationException("TODO");
+        return size;
     }
 
     // prints from front to rear
     public void display() {
-        throw new UnsupportedOperationException("TODO");
+        Node current = front;
+        while (current != null) {
+            System.out.print(current.data + " ");
+            current = current.next;
+        }
+        System.out.println();
     }
 }

@@ -335,6 +335,60 @@ public class QueueDemo {
 
     private static void demoLinkedQueue() {
         System.out.println("=== LinkedQueue ===");
+        LinkedQueue queue = new LinkedQueue();
+        System.out.println("new queue: isEmpty = " + queue.isEmpty() + ", size = " + queue.size());
+        queue.enqueue(10);
+        queue.enqueue(20);
+        queue.enqueue(30);
+        System.out.print("after enqueue 10, 20, 30 = ");
+        queue.display();
+        System.out.println("size = " + queue.size() + ", first = " + queue.first() + ", last = " + queue.last());
+
+        System.out.println();
+        System.out.println("dequeue = " + queue.dequeue());
+        System.out.print("after dequeue = ");
+        queue.display();
+        System.out.println("size = " + queue.size() + ", first = " + queue.first() + ", last = " + queue.last());
+
+        System.out.println();
+        for (int value = 40; value <= 100; value += 10) {
+            queue.enqueue(value);
+        }
+        System.out.print("after enqueue 40 to 100, no capacity limit = ");
+        queue.display();
+        System.out.println("size = " + queue.size() + ", last = " + queue.last());
+
+        System.out.println();
+        System.out.print("dequeue all = ");
+        while (!queue.isEmpty()) {
+            System.out.print(queue.dequeue() + " ");
+        }
+        System.out.println();
+        System.out.println("isEmpty = " + queue.isEmpty() + ", size = " + queue.size());
+        System.out.print("display on empty queue = ");
+        queue.display();
+        try {
+            queue.dequeue();
+        } catch (NoSuchElementException e) {
+            System.out.println("dequeue on empty queue = " + e.getMessage());
+        }
+        try {
+            queue.first();
+        } catch (NoSuchElementException e) {
+            System.out.println("first on empty queue = " + e.getMessage());
+        }
+        try {
+            queue.last();
+        } catch (NoSuchElementException e) {
+            System.out.println("last on empty queue = " + e.getMessage());
+        }
+
+        System.out.println();
+        queue.enqueue(-5);
+        System.out.println("enqueue -5 after emptying: first = " + queue.first() + ", last = " + queue.last()
+                + ", size = " + queue.size());
+        System.out.println("dequeue = " + queue.dequeue() + ", isEmpty = " + queue.isEmpty());
+        System.out.println();
     }
 
     private static void demoCircularDeque() {
