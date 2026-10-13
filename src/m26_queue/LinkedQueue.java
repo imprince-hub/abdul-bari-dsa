@@ -3,20 +3,14 @@ package m26_queue;
 // Lectures 10 and 11. int queue on a singly linked list.
 // front is the first node (dequeue side) and rear is the last node (enqueue side).
 // Both are null when the queue is empty, and both point to the same node when it has one element.
-// Fixed capacity, like m23's LinkedStack.
+// No capacity limit: every enqueue just makes a new node, so there is no isFull().
+// In Java, new never returns null; if memory runs out it throws OutOfMemoryError.
 public class LinkedQueue {
     private Node front;
     private Node rear;
     private int size; // number of elements in the queue
-    private final int capacity; // max number of elements
-
-    // capacity of 0 or less throws IllegalArgumentException("Capacity must be positive: x")
-    public LinkedQueue(int capacity) {
-        throw new UnsupportedOperationException("TODO");
-    }
 
     // adds a new node after rear
-    // full queue throws IllegalStateException("Queue is full")
     public void enqueue(int value) {
         throw new UnsupportedOperationException("TODO");
     }
@@ -40,10 +34,6 @@ public class LinkedQueue {
     }
 
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    public boolean isFull() {
         throw new UnsupportedOperationException("TODO");
     }
 
