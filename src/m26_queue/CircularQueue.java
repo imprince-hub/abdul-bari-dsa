@@ -1,5 +1,7 @@
 package m26_queue;
 
+import java.util.NoSuchElementException;
+
 // Lectures 7 and 8. Circular queue on an int array. front and rear move forward with
 // wrap-around (after the last index comes index 0), so dequeued slots are used again.
 // Same pointer meaning as ArrayQueue, but both start at 0.
@@ -11,53 +13,81 @@ public class CircularQueue {
     private int rear; // index of the last element
 
     // capacity of 0 or less throws IllegalArgumentException("Capacity must be positive: x")
-    // Integer.MAX_VALUE also throws IllegalArgumentException, because capacity + 1 would overflow
+    // Integer.MAX_VALUE throws IllegalArgumentException("Capacity is too large: x"), because capacity + 1 would overflow
     public CircularQueue(int capacity) {
-        throw new UnsupportedOperationException("TODO");
+        if (capacity <= 0) {
+            throw new IllegalArgumentException("Capacity must be positive: " + capacity);
+        }
+        if (capacity == Integer.MAX_VALUE) {
+            throw new IllegalArgumentException("Capacity is too large: " + capacity);
+        }
+        elements = new int[capacity + 1];
     }
 
     // full queue throws IllegalStateException("Queue is full")
     public void enqueue(int value) {
-        throw new UnsupportedOperationException("TODO");
+        if (isFull()) {
+            throw new IllegalStateException("Queue is full");
+        }
+        rear = next(rear);
+        elements[rear] = value;
     }
 
     // empty queue throws NoSuchElementException("Queue is empty")
     public int dequeue() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        front = next(front);
+        return elements[front];
     }
 
     // first element, removes nothing
     // empty queue throws NoSuchElementException("Queue is empty")
     public int first() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        return elements[next(front)];
     }
 
     // last element, removes nothing
     // empty queue throws NoSuchElementException("Queue is empty")
     public int last() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Queue is empty");
+        }
+        return elements[rear];
     }
 
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("TODO");
+        return front == rear;
     }
 
     public boolean isFull() {
-        throw new UnsupportedOperationException("TODO");
+        return next(rear) == front;
     }
 
     // number of elements, also correct after rear has wrapped around behind front
     public int size() {
-        throw new UnsupportedOperationException("TODO");
+        if (rear >= front) {
+            return rear - front;
+        }
+        return rear - front + elements.length;
     }
 
     // prints from front to rear, following the wrap-around
     public void display() {
-        throw new UnsupportedOperationException("TODO");
+        int index = front;
+        while (index != rear) {
+            index = next(index);
+            System.out.print(elements[index] + " ");
+        }
+        System.out.println();
     }
 
     // the index after index, wrapping to 0 after the last index
     private int next(int index) {
-        throw new UnsupportedOperationException("TODO");
+        return (index + 1) % elements.length;
     }
 }

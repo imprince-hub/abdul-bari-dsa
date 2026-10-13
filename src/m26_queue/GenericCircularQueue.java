@@ -9,7 +9,7 @@ public class GenericCircularQueue<T> {
     private int rear; // index of the last element
 
     // capacity of 0 or less throws IllegalArgumentException("Capacity must be positive: x")
-    // Integer.MAX_VALUE also throws IllegalArgumentException, because capacity + 1 would overflow
+    // Integer.MAX_VALUE throws IllegalArgumentException("Capacity is too large: x"), because capacity + 1 would overflow
     public GenericCircularQueue(int capacity) {
         throw new UnsupportedOperationException("TODO");
     }

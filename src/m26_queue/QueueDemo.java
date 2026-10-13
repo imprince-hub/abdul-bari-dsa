@@ -183,6 +183,77 @@ public class QueueDemo {
 
     private static void demoCircularQueue() {
         System.out.println("=== CircularQueue ===");
+        CircularQueue queue = new CircularQueue(3);
+        System.out.println("new queue(3): isEmpty = " + queue.isEmpty() + ", size = " + queue.size());
+        queue.enqueue(10);
+        queue.enqueue(20);
+        queue.enqueue(30);
+        System.out.print("after enqueue 10, 20, 30 = ");
+        queue.display();
+        System.out.println("isFull = " + queue.isFull() + ", size = " + queue.size()
+                + ", first = " + queue.first() + ", last = " + queue.last());
+        try {
+            queue.enqueue(40);
+        } catch (IllegalStateException e) {
+            System.out.println("enqueue(40) on full queue = " + e.getMessage());
+        }
+
+        System.out.println();
+        System.out.println("dequeue = " + queue.dequeue());
+        System.out.println("dequeue = " + queue.dequeue());
+        queue.enqueue(40);
+        queue.enqueue(50);
+        System.out.print("after enqueue 40, 50 (rear wrapped to the start of the array) = ");
+        queue.display();
+        System.out.println("isFull = " + queue.isFull() + ", size = " + queue.size()
+                + ", first = " + queue.first() + ", last = " + queue.last());
+
+        System.out.println();
+        System.out.print("dequeue all = ");
+        while (!queue.isEmpty()) {
+            System.out.print(queue.dequeue() + " ");
+        }
+        System.out.println();
+        System.out.println("isEmpty = " + queue.isEmpty() + ", isFull = " + queue.isFull() + ", size = " + queue.size());
+        queue.enqueue(60);
+        System.out.print("enqueue 60 after emptying, the ArrayQueue drawback is gone = ");
+        queue.display();
+        System.out.println("dequeue = " + queue.dequeue());
+        System.out.print("display on empty queue = ");
+        queue.display();
+        try {
+            queue.dequeue();
+        } catch (NoSuchElementException e) {
+            System.out.println("dequeue on empty queue = " + e.getMessage());
+        }
+        try {
+            queue.first();
+        } catch (NoSuchElementException e) {
+            System.out.println("first on empty queue = " + e.getMessage());
+        }
+        try {
+            queue.last();
+        } catch (NoSuchElementException e) {
+            System.out.println("last on empty queue = " + e.getMessage());
+        }
+
+        System.out.println();
+        CircularQueue single = new CircularQueue(1);
+        single.enqueue(-5);
+        System.out.println("queue(1) after enqueue -5: isFull = " + single.isFull()
+                + ", first = " + single.first() + ", last = " + single.last());
+        System.out.println("dequeue = " + single.dequeue() + ", isEmpty = " + single.isEmpty());
+        try {
+            new CircularQueue(0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("new CircularQueue(0) = " + e.getMessage());
+        }
+        try {
+            new CircularQueue(Integer.MAX_VALUE);
+        } catch (IllegalArgumentException e) {
+            System.out.println("new CircularQueue(Integer.MAX_VALUE) = " + e.getMessage());
+        }
+        System.out.println();
     }
 
     private static void demoGenericCircularQueue() {
