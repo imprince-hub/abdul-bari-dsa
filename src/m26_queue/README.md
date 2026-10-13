@@ -1,6 +1,6 @@
 # 26. Queue
 
-Package: `m26_queue` · 15 lectures · 4 done
+Package: `m26_queue` · 15 lectures · 5 done
 
 Put this line at the top of every file in this folder:
 
@@ -14,7 +14,7 @@ package m26_queue;
 - [x] Queue Using Single Pointer
 - [x] Queue using Array - Two Pointer
 - [x] Queue using Array - Two Pointer Solution
-- [ ] Implementation of Queue
+- [x] Implementation of Queue
 
 ## Circular Queue
 
@@ -37,7 +37,7 @@ package m26_queue;
 
 ## Code in this folder
 
-Introduction to Queue is theory, so it has no code. `SinglePointerQueue` and `ArrayQueue` are complete. The other files are skeletons: method names are in place and unfinished methods throw `UnsupportedOperationException("TODO")`. All classes use the same messages: a capacity of 0 or less throws `IllegalArgumentException("Capacity must be positive: x")`, a full queue throws `IllegalStateException("Queue is full")` and an empty queue throws `NoSuchElementException("Queue is empty")`. The deques say `Deque` instead of `Queue`.
+Introduction to Queue is theory, and Implementation of Queue repeats the two-pointer queue on the board, so neither has its own code. `SinglePointerQueue` and `ArrayQueue` are complete. The other files are skeletons: method names are in place and unfinished methods throw `UnsupportedOperationException("TODO")`. All classes use the same messages: a capacity of 0 or less throws `IllegalArgumentException("Capacity must be positive: x")`, a full queue throws `IllegalStateException("Queue is full")` and an empty queue throws `NoSuchElementException("Queue is empty")`. The deques say `Deque` instead of `Queue`.
 
 | File | What it has |
 |------|-------------|
