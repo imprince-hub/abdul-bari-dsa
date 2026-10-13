@@ -258,6 +258,79 @@ public class QueueDemo {
 
     private static void demoGenericCircularQueue() {
         System.out.println("=== GenericCircularQueue ===");
+        GenericCircularQueue<String> queue = new GenericCircularQueue<>(3);
+        System.out.println("new queue<String>(3): isEmpty = " + queue.isEmpty() + ", size = " + queue.size());
+        queue.enqueue("red");
+        queue.enqueue("green");
+        queue.enqueue("blue");
+        System.out.print("after enqueue red, green, blue = ");
+        queue.display();
+        System.out.println("isFull = " + queue.isFull() + ", size = " + queue.size()
+                + ", first = " + queue.first() + ", last = " + queue.last());
+        try {
+            queue.enqueue("black");
+        } catch (IllegalStateException e) {
+            System.out.println("enqueue(\"black\") on full queue = " + e.getMessage());
+        }
+        try {
+            queue.enqueue(null);
+        } catch (NullPointerException e) {
+            System.out.println("enqueue(null) = " + e.getMessage());
+        }
+
+        System.out.println();
+        System.out.println("dequeue = " + queue.dequeue());
+        System.out.println("dequeue = " + queue.dequeue());
+        queue.enqueue("yellow");
+        queue.enqueue("white");
+        System.out.print("after enqueue yellow, white (rear wrapped to the start of the array) = ");
+        queue.display();
+        System.out.println("isFull = " + queue.isFull() + ", size = " + queue.size()
+                + ", first = " + queue.first() + ", last = " + queue.last());
+
+        System.out.println();
+        System.out.print("dequeue all = ");
+        while (!queue.isEmpty()) {
+            System.out.print(queue.dequeue() + " ");
+        }
+        System.out.println();
+        System.out.println("isEmpty = " + queue.isEmpty() + ", size = " + queue.size());
+        System.out.print("display on empty queue = ");
+        queue.display();
+        try {
+            queue.dequeue();
+        } catch (NoSuchElementException e) {
+            System.out.println("dequeue on empty queue = " + e.getMessage());
+        }
+        try {
+            queue.first();
+        } catch (NoSuchElementException e) {
+            System.out.println("first on empty queue = " + e.getMessage());
+        }
+        try {
+            queue.last();
+        } catch (NoSuchElementException e) {
+            System.out.println("last on empty queue = " + e.getMessage());
+        }
+
+        System.out.println();
+        GenericCircularQueue<Integer> numbers = new GenericCircularQueue<>(2);
+        numbers.enqueue(-5);
+        numbers.enqueue(7);
+        System.out.print("queue<Integer>(2) after enqueue -5, 7 = ");
+        numbers.display();
+        System.out.println("isFull = " + numbers.isFull() + ", dequeue = " + numbers.dequeue() + ", size = " + numbers.size());
+        try {
+            new GenericCircularQueue<Integer>(0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("new GenericCircularQueue<>(0) = " + e.getMessage());
+        }
+        try {
+            new GenericCircularQueue<Integer>(Integer.MAX_VALUE);
+        } catch (IllegalArgumentException e) {
+            System.out.println("new GenericCircularQueue<>(Integer.MAX_VALUE) = " + e.getMessage());
+        }
+        System.out.println();
     }
 
     private static void demoLinkedQueue() {
