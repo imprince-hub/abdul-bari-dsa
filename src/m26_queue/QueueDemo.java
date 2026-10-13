@@ -143,6 +143,42 @@ public class QueueDemo {
 
     private static void demoArrayQueueDrawback() {
         System.out.println("=== ArrayQueue drawback ===");
+        ArrayQueue queue = new ArrayQueue(3);
+        queue.enqueue(10);
+        queue.enqueue(20);
+        queue.enqueue(30);
+        System.out.print("queue(3) after enqueue 10, 20, 30 = ");
+        queue.display();
+        System.out.print("dequeue all = ");
+        while (!queue.isEmpty()) {
+            System.out.print(queue.dequeue() + " ");
+        }
+        System.out.println();
+        System.out.println("isEmpty = " + queue.isEmpty() + ", isFull = " + queue.isFull() + ", size = " + queue.size());
+        try {
+            queue.enqueue(40);
+        } catch (IllegalStateException e) {
+            System.out.println("enqueue(40) on an empty queue = " + e.getMessage());
+        }
+
+        System.out.println();
+        ArrayQueue half = new ArrayQueue(4);
+        half.enqueue(1);
+        half.enqueue(2);
+        half.enqueue(3);
+        half.enqueue(4);
+        half.dequeue();
+        half.dequeue();
+        System.out.print("queue(4) after enqueue 1, 2, 3, 4 and two dequeues = ");
+        half.display();
+        System.out.println("size = " + half.size() + ", isFull = " + half.isFull());
+        try {
+            half.enqueue(5);
+        } catch (IllegalStateException e) {
+            System.out.println("enqueue(5) with 2 free slots = " + e.getMessage());
+        }
+        System.out.println("front and rear only move forward, so a dequeued slot is never used again");
+        System.out.println();
     }
 
     private static void demoCircularQueue() {

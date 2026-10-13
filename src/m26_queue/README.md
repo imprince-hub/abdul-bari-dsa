@@ -1,6 +1,6 @@
 # 26. Queue
 
-Package: `m26_queue` · 15 lectures · 5 done
+Package: `m26_queue` · 15 lectures · 6 done
 
 Put this line at the top of every file in this folder:
 
@@ -18,7 +18,7 @@ package m26_queue;
 
 ## Circular Queue
 
-- [ ] Drawbacks of Queue using two pointers
+- [x] Drawbacks of Queue using two pointers
 - [ ] Circular Queue
 - [ ] Circular Queue Solution
 - [ ] Circular Queue Generic Solution
@@ -50,6 +50,6 @@ Introduction to Queue is theory, and Implementation of Queue repeats the two-poi
 | `CircularDeque.java` | Lectures 12 and 14. `int` deque on a circular array, same pointer rules as `CircularQueue`. `insertFront`, `insertRear`, `deleteFront`, `deleteRear`, `first`, `last`, `isEmpty`, `isFull`, `size`, `display`, plus private `next(index)` and `previous(index)`. All stubs |
 | `DoublyNode.java` | One node for the deque: `data`, `next`, `prev`, and a constructor |
 | `LinkedDeque.java` | Lectures 13 and 15. `int` deque on a doubly linked list: `front` and `rear` are both `null` when empty, fixed `capacity`. Same public methods as `CircularDeque`; all stubs |
-| `QueueDemo.java` | `main()` that calls one section method per class, plus `demoArrayQueueDrawback()` for lecture 6. `demoSinglePointerQueue()` enqueues 10, 20, 30 into a capacity-4 queue, dequeues once to show the shift, fills the queue and shows the error for an enqueue on a full queue, dequeues everything and shows the error for a dequeue on an empty queue, then enqueues 70 to show the queue works again after emptying. Last, it shows a capacity-1 queue and the error for `new SinglePointerQueue(0)`. `demoArrayQueue()` enqueues 10, 20, 30 into a capacity-4 queue and shows `size`, `first` and `last`, fills it and shows the error for an enqueue on a full queue, dequeues once and shows that `first` is now 20 and that a second `first()` removes nothing, dequeues everything and shows the errors for `dequeue`, `first` and `last` on an empty queue, then shows a capacity-1 queue and the error for `new ArrayQueue(0)`. The other sections only print their heading so far |
+| `QueueDemo.java` | `main()` that calls one section method per class, plus `demoArrayQueueDrawback()` for lecture 6. `demoSinglePointerQueue()` enqueues 10, 20, 30 into a capacity-4 queue, dequeues once to show the shift, fills the queue and shows the error for an enqueue on a full queue, dequeues everything and shows the error for a dequeue on an empty queue, then enqueues 70 to show the queue works again after emptying. Last, it shows a capacity-1 queue and the error for `new SinglePointerQueue(0)`. `demoArrayQueue()` enqueues 10, 20, 30 into a capacity-4 queue and shows `size`, `first` and `last`, fills it and shows the error for an enqueue on a full queue, dequeues once and shows that `first` is now 20 and that a second `first()` removes nothing, dequeues everything and shows the errors for `dequeue`, `first` and `last` on an empty queue, then shows a capacity-1 queue and the error for `new ArrayQueue(0)`. `demoArrayQueueDrawback()` (lecture 6) fills a capacity-3 queue and dequeues everything, then shows that `isEmpty` and `isFull` are both true and that one more enqueue throws `Queue is full`. Then it fills a capacity-4 queue and dequeues twice: `size` is 2 but `isFull` is true, so the 2 dequeued slots are lost. The other sections only print their heading so far |
 
 [Back to all modules](../../README.md)
