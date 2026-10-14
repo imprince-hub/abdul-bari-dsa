@@ -1,28 +1,31 @@
 package m26_queue;
 
-// Lectures 12 and 14. Double ended queue on an int array: insert and delete at both ends.
-// Circular like CircularQueue, so all four operations are O(1) and no slot is wasted for good.
-// Same pointer meaning as CircularQueue, both start at 0, and one slot always stays empty,
-// so the array has capacity + 1 slots.
+import java.util.NoSuchElementException;
+
+// Lectures 12 and 14. Double ended queue on an int array with two pointers, as in the lecture:
+// insert and delete at both ends. It is not circular, so front and rear never wrap around.
+// Same pointer meaning as ArrayQueue: front is the index just BEFORE the first element,
+// rear is the index of the last element, and both start at -1.
 // insertRear and deleteFront work like enqueue and dequeue.
-// insertFront and deleteRear move the pointers backward, wrapping from 0 to the last index.
-public class CircularDeque {
+// insertFront and deleteRear move the pointers backward.
+// insertFront needs a free slot before the first element, so it only works after some deleteFront.
+// Not the same as java.util.ArrayDeque, which is circular and grows when it is full.
+public class ArrayDeque {
     private final int[] elements;
-    private int front; // index just BEFORE the first element
-    private int rear; // index of the last element
+    private int front = -1; // index just BEFORE the first element
+    private int rear = -1; // index of the last element
 
     // capacity of 0 or less throws IllegalArgumentException("Capacity must be positive: x")
-    // Integer.MAX_VALUE throws IllegalArgumentException("Capacity is too large: x"), because capacity + 1 would overflow
-    public CircularDeque(int capacity) {
+    public ArrayDeque(int capacity) {
         throw new UnsupportedOperationException("TODO");
     }
 
-    // full deque throws IllegalStateException("Deque is full")
+    // no free slot before the first element throws IllegalStateException("No space at front")
     public void insertFront(int value) {
         throw new UnsupportedOperationException("TODO");
     }
 
-    // full deque throws IllegalStateException("Deque is full")
+    // no free slot after the last element throws IllegalStateException("No space at rear")
     public void insertRear(int value) {
         throw new UnsupportedOperationException("TODO");
     }
@@ -53,6 +56,7 @@ public class CircularDeque {
         throw new UnsupportedOperationException("TODO");
     }
 
+    // true only when every slot holds an element, so neither end has space
     public boolean isFull() {
         throw new UnsupportedOperationException("TODO");
     }
@@ -61,18 +65,8 @@ public class CircularDeque {
         throw new UnsupportedOperationException("TODO");
     }
 
-    // prints from front to rear, following the wrap-around
+    // prints from front to rear
     public void display() {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    // the index after index, wrapping to 0 after the last index
-    private int next(int index) {
-        throw new UnsupportedOperationException("TODO");
-    }
-
-    // the index before index, wrapping to the last index before 0
-    private int previous(int index) {
         throw new UnsupportedOperationException("TODO");
     }
 }

@@ -10,7 +10,7 @@ public class QueueDemo {
         demoCircularQueue();
         demoGenericCircularQueue();
         demoLinkedQueue();
-        demoCircularDeque();
+        demoArrayDeque();
         demoLinkedDeque();
     }
 
@@ -391,8 +391,8 @@ public class QueueDemo {
         System.out.println();
     }
 
-    private static void demoCircularDeque() {
-        System.out.println("=== CircularDeque ===");
+    private static void demoArrayDeque() {
+        System.out.println("=== ArrayDeque ===");
     }
 
     private static void demoLinkedDeque() {
