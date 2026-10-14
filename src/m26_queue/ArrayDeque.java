@@ -17,56 +17,81 @@ public class ArrayDeque {
 
     // capacity of 0 or less throws IllegalArgumentException("Capacity must be positive: x")
     public ArrayDeque(int capacity) {
-        throw new UnsupportedOperationException("TODO");
+        if (capacity <= 0) {
+            throw new IllegalArgumentException("Capacity must be positive: " + capacity);
+        }
+        elements = new int[capacity];
     }
 
     // no free slot before the first element throws IllegalStateException("No space at front")
     public void insertFront(int value) {
-        throw new UnsupportedOperationException("TODO");
+        if (front == -1) {
+            throw new IllegalStateException("No space at front");
+        }
+        elements[front] = value;
+        front--;
     }
 
     // no free slot after the last element throws IllegalStateException("No space at rear")
     public void insertRear(int value) {
-        throw new UnsupportedOperationException("TODO");
+        if (rear == elements.length - 1) {
+            throw new IllegalStateException("No space at rear");
+        }
+        elements[++rear] = value;
     }
 
     // empty deque throws NoSuchElementException("Deque is empty")
     public int deleteFront() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Deque is empty");
+        }
+        return elements[++front];
     }
 
     // empty deque throws NoSuchElementException("Deque is empty")
     public int deleteRear() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Deque is empty");
+        }
+        return elements[rear--];
     }
 
     // first element, removes nothing
     // empty deque throws NoSuchElementException("Deque is empty")
     public int first() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Deque is empty");
+        }
+        return elements[front + 1];
     }
 
     // last element, removes nothing
     // empty deque throws NoSuchElementException("Deque is empty")
     public int last() {
-        throw new UnsupportedOperationException("TODO");
+        if (isEmpty()) {
+            throw new NoSuchElementException("Deque is empty");
+        }
+        return elements[rear];
     }
 
     public boolean isEmpty() {
-        throw new UnsupportedOperationException("TODO");
+        return front == rear;
     }
 
     // true only when every slot holds an element, so neither end has space
     public boolean isFull() {
-        throw new UnsupportedOperationException("TODO");
+        return size() == elements.length;
     }
 
     public int size() {
-        throw new UnsupportedOperationException("TODO");
+        return rear - front;
     }
 
     // prints from front to rear
     public void display() {
-        throw new UnsupportedOperationException("TODO");
+        for (int i = front + 1; i <= rear; i++) {
+            System.out.print(elements[i] + " ");
+        }
+        System.out.println();
     }
 }

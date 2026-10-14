@@ -393,6 +393,101 @@ public class QueueDemo {
 
     private static void demoArrayDeque() {
         System.out.println("=== ArrayDeque ===");
+        ArrayDeque deque = new ArrayDeque(5);
+        System.out.println("new deque(5): isEmpty = " + deque.isEmpty() + ", size = " + deque.size());
+        try {
+            deque.insertFront(5);
+        } catch (IllegalStateException e) {
+            System.out.println("insertFront(5) on a new deque = " + e.getMessage());
+        }
+        deque.insertRear(10);
+        deque.insertRear(20);
+        deque.insertRear(30);
+        System.out.print("after insertRear 10, 20, 30 = ");
+        deque.display();
+        System.out.println("size = " + deque.size() + ", first = " + deque.first() + ", last = " + deque.last());
+
+        System.out.println();
+        System.out.println("deleteFront = " + deque.deleteFront());
+        System.out.println("deleteFront = " + deque.deleteFront());
+        System.out.print("after 2 deleteFront = ");
+        deque.display();
+        deque.insertFront(20);
+        deque.insertFront(10);
+        System.out.print("after insertFront 20, 10 (the free slots at the front are used again) = ");
+        deque.display();
+        System.out.println("size = " + deque.size() + ", first = " + deque.first() + ", last = " + deque.last());
+        try {
+            deque.insertFront(5);
+        } catch (IllegalStateException e) {
+            System.out.println("insertFront(5) with no slot before index 0 = " + e.getMessage());
+        }
+
+        System.out.println();
+        deque.insertRear(40);
+        deque.insertRear(50);
+        System.out.print("after insertRear 40, 50 = ");
+        deque.display();
+        System.out.println("isFull = " + deque.isFull() + ", size = " + deque.size());
+        try {
+            deque.insertRear(60);
+        } catch (IllegalStateException e) {
+            System.out.println("insertRear(60) on full deque = " + e.getMessage());
+        }
+        System.out.println("deleteFront = " + deque.deleteFront());
+        System.out.println("isFull = " + deque.isFull() + ", size = " + deque.size());
+        try {
+            deque.insertRear(60);
+        } catch (IllegalStateException e) {
+            System.out.println("insertRear(60) with a free slot only at the front = " + e.getMessage());
+        }
+
+        System.out.println();
+        System.out.println("deleteRear = " + deque.deleteRear());
+        System.out.print("after deleteRear = ");
+        deque.display();
+        System.out.println("last = " + deque.last());
+        System.out.print("deleteRear until empty = ");
+        while (!deque.isEmpty()) {
+            System.out.print(deque.deleteRear() + " ");
+        }
+        System.out.println();
+        System.out.println("isEmpty = " + deque.isEmpty() + ", size = " + deque.size());
+        System.out.print("display on empty deque = ");
+        deque.display();
+        try {
+            deque.deleteFront();
+        } catch (NoSuchElementException e) {
+            System.out.println("deleteFront on empty deque = " + e.getMessage());
+        }
+        try {
+            deque.deleteRear();
+        } catch (NoSuchElementException e) {
+            System.out.println("deleteRear on empty deque = " + e.getMessage());
+        }
+        try {
+            deque.first();
+        } catch (NoSuchElementException e) {
+            System.out.println("first on empty deque = " + e.getMessage());
+        }
+        try {
+            deque.last();
+        } catch (NoSuchElementException e) {
+            System.out.println("last on empty deque = " + e.getMessage());
+        }
+
+        System.out.println();
+        ArrayDeque single = new ArrayDeque(1);
+        single.insertRear(-5);
+        System.out.println("deque(1) after insertRear -5: isFull = " + single.isFull()
+                + ", first = " + single.first() + ", last = " + single.last());
+        System.out.println("deleteFront = " + single.deleteFront() + ", isEmpty = " + single.isEmpty());
+        try {
+            new ArrayDeque(0);
+        } catch (IllegalArgumentException e) {
+            System.out.println("new ArrayDeque(0) = " + e.getMessage());
+        }
+        System.out.println();
     }
 
     private static void demoLinkedDeque() {
