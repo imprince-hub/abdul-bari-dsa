@@ -492,5 +492,67 @@ public class QueueDemo {
 
     private static void demoLinkedDeque() {
         System.out.println("=== LinkedDeque ===");
+        LinkedDeque deque = new LinkedDeque();
+        System.out.println("new deque: isEmpty = " + deque.isEmpty() + ", size = " + deque.size());
+        deque.insertFront(20);
+        deque.insertFront(10);
+        deque.insertRear(30);
+        deque.insertRear(40);
+        System.out.print("after insertFront 20, 10 and insertRear 30, 40 (insertFront works on a new deque, unlike ArrayDeque) = ");
+        deque.display();
+        System.out.println("size = " + deque.size() + ", first = " + deque.first() + ", last = " + deque.last());
+
+        System.out.println();
+        System.out.println("deleteFront = " + deque.deleteFront());
+        System.out.println("deleteRear = " + deque.deleteRear());
+        System.out.print("after deleteFront and deleteRear = ");
+        deque.display();
+        System.out.println("size = " + deque.size() + ", first = " + deque.first() + ", last = " + deque.last());
+
+        System.out.println();
+        for (int value = 1; value <= 5; value++) {
+            deque.insertFront(-value);
+            deque.insertRear(100 + value);
+        }
+        System.out.print("after 5 more at each end, no capacity limit = ");
+        deque.display();
+        System.out.println("size = " + deque.size() + ", first = " + deque.first() + ", last = " + deque.last());
+
+        System.out.println();
+        System.out.print("deleteRear until empty = ");
+        while (!deque.isEmpty()) {
+            System.out.print(deque.deleteRear() + " ");
+        }
+        System.out.println();
+        System.out.println("isEmpty = " + deque.isEmpty() + ", size = " + deque.size());
+        System.out.print("display on empty deque = ");
+        deque.display();
+        try {
+            deque.deleteFront();
+        } catch (NoSuchElementException e) {
+            System.out.println("deleteFront on empty deque = " + e.getMessage());
+        }
+        try {
+            deque.deleteRear();
+        } catch (NoSuchElementException e) {
+            System.out.println("deleteRear on empty deque = " + e.getMessage());
+        }
+        try {
+            deque.first();
+        } catch (NoSuchElementException e) {
+            System.out.println("first on empty deque = " + e.getMessage());
+        }
+        try {
+            deque.last();
+        } catch (NoSuchElementException e) {
+            System.out.println("last on empty deque = " + e.getMessage());
+        }
+
+        System.out.println();
+        deque.insertRear(-5);
+        System.out.println("insertRear -5 after emptying: first = " + deque.first() + ", last = " + deque.last()
+                + ", size = " + deque.size());
+        System.out.println("deleteFront = " + deque.deleteFront() + ", isEmpty = " + deque.isEmpty());
+        System.out.println();
     }
 }
