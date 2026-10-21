@@ -2,11 +2,15 @@ package m29_tree_traversals;
 
 import m26_queue.GenericCircularQueue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 // Binary tree in linked representation, used for all m29 lectures.
 // From m28 (copied as-is): the level-order array constructor, isEmpty, size, display,
 // and the helpers makeChild, checkNoValuesLeft, childText.
 // Queue: m26's GenericCircularQueue<Node>.
-// New in m29: countRecursive (lectures 1 and 2).
+// New in m29: countRecursive (lectures 1 and 2),
+// preorderRecursive, inorderRecursive, postorderRecursive (lectures 3 to 7).
 public class BinaryTree {
     private Node root;
     private int size; // number of nodes
@@ -98,6 +102,62 @@ public class BinaryTree {
             return 0;
         }
         return 1 + countRecursive(node.lchild) + countRecursive(node.rchild);
+    }
+
+    // Lectures 3 to 7. Recursive traversals, same shape as countRecursive.
+    // Each one returns the data in visit order as a new list. Returned, not printed,
+    // so later lectures can compare them with the iterative versions using equals.
+    // Empty tree returns an empty list: the helper gets null and does nothing, so no isEmpty() check.
+    // Public wrapper: makes a new ArrayList, passes it with root to the helper, returns the list.
+    // Helper: node == null means nothing to visit (base case); otherwise "visit" means result.add(node.data),
+    // done in the order given above each pair.
+
+    // preorder: visit node, then lchild's subtree, then rchild's subtree
+    public List<Integer> preorderRecursive() {
+        List<Integer> result = new ArrayList<>();
+        preorderRecursive(root, result);
+        return result;
+    }
+
+    private void preorderRecursive(Node node, List<Integer> result) {
+        if (node == null) {
+            return;
+        }
+        result.add(node.data);
+        preorderRecursive(node.lchild, result);
+        preorderRecursive(node.rchild, result);
+    }
+
+    // inorder: lchild's subtree, then visit node, then rchild's subtree
+    public List<Integer> inorderRecursive() {
+        List<Integer> result = new ArrayList<>();
+        inorderRecursive(root, result);
+        return result;
+    }
+
+    private void inorderRecursive(Node node, List<Integer> result) {
+        if (node == null) {
+            return;
+        }
+        inorderRecursive(node.lchild, result);
+        result.add(node.data);
+        inorderRecursive(node.rchild, result);
+    }
+
+    // postorder: lchild's subtree, then rchild's subtree, then visit node
+    public List<Integer> postorderRecursive() {
+        List<Integer> result = new ArrayList<>();
+        postorderRecursive(root, result);
+        return result;
+    }
+
+    private void postorderRecursive(Node node, List<Integer> result) {
+        if (node == null) {
+            return;
+        }
+        postorderRecursive(node.lchild, result);
+        postorderRecursive(node.rchild, result);
+        result.add(node.data);
     }
 
     // value is null: returns null and changes nothing
