@@ -1,6 +1,6 @@
 # 29. Tree Traversals
 
-Package: `m29_tree_traversals` · 20 lectures
+Package: `m29_tree_traversals` · 20 lectures · 2 done
 
 Put this line at the top of every file in this folder:
 
@@ -10,8 +10,8 @@ package m29_tree_traversals;
 
 ## Tree Traversals (Basics and Program)
 
-- [ ] Counting Nodes in a Binary Tree
-- [ ] Counting Nodes in a Binary Tree - Solution
+- [x] Counting Nodes in a Binary Tree
+- [x] Counting Nodes in a Binary Tree - Solution
 - [ ] Tree Traversals - 1
 - [ ] Tree Traversals - 2
 - [ ] Tree Traversals - 3
@@ -36,5 +36,13 @@ package m29_tree_traversals;
 - [ ] Level Order Traversal Solution
 - [ ] Generating Tree from Traversals
 - [ ] Tree Traversal Solutions
+
+## Code in this folder
+
+| File | What it has |
+|------|-------------|
+| `Node.java` | One node in linked representation: `lchild`, `data`, `rchild` (copy of the m28 `Node`) |
+| `BinaryTree.java` | From m28 (copied as-is): the level-order `Integer[]` constructor (built with m26's `GenericCircularQueue<Node>`, `null` means no child), `isEmpty()`, `size()`, `display()` and the helpers `makeChild`, `checkNoValuesLeft`, `childText`. New, lectures 1 and 2: `countRecursive()` counts the nodes by visiting the tree, without reading the `size` field. The public wrapper only calls the private helper with `root`. The helper returns 0 for `null` (this base case also covers the empty tree, so the wrapper needs no `isEmpty()` check) and otherwise `1 + count(lchild) + count(rchild)`, added in the returning phase. One stack frame per level, so a very deep skewed tree hits `StackOverflowError` (around 50,000 levels in a test with the default stack size) |
+| `TreeTraversalsDemo.java` | `main()` that calls `demoCountNodes()`. `showCount(levelOrder)` prints the array, then `countRecursive` and `size` on one line, which must match. Arrays: `{1..7}` (full tree), `{10, 20, 30, null, 40, 50, null, -1, null, null, 60}` (missing children, `-1` as a value), `{1, 2, null, 3, null, 4}` (left-skewed), `{1, null, 2, null, 3}` (right-skewed), `{7}` and `{}`. Then a complete tree of 1,000,000 nodes from `rangeArray(n)`, which returns `{1, 2, ..., n}` |
 
 [Back to all modules](../../README.md)
