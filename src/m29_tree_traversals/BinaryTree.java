@@ -3,6 +3,7 @@ package m29_tree_traversals;
 import java.io.PrintStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Queue;
@@ -16,7 +17,8 @@ import java.util.Scanner;
 // the number of nodes before they are typed, so m29 uses ArrayDeque everywhere.
 // New in m29: countRecursive (lectures 1 and 2),
 // preorderRecursive, inorderRecursive, postorderRecursive (lectures 3 to 7),
-// the keyboard constructor BinaryTree(Scanner, PrintStream) (lectures 8 and 9).
+// the keyboard constructor BinaryTree(Scanner, PrintStream) (lectures 8 and 9),
+// preorderIterative, inorderIterative (lectures 10 and 11).
 public class BinaryTree {
     private Node root;
     private int size; // number of nodes
@@ -201,6 +203,55 @@ public class BinaryTree {
         postorderRecursive(node.lchild, result);
         postorderRecursive(node.rchild, result);
         result.add(node.data);
+    }
+
+    // Lectures 10 and 11. Iterative traversals: the same visit order as the recursive versions,
+    // but the method keeps its own stack of nodes instead of using the call stack.
+    // No recursion, so no public wrapper and private helper pair: one public method each.
+    // Each one returns a new list, which must be equal to the recursive version for every tree
+    // (the demo checks this with equals).
+    // Variables: Node current (the node being looked at, starts at root) and Deque<Node> stack.
+    // Stack: java.util.ArrayDeque<Node> used as Deque<Node> (push, pop, isEmpty), the same class as the queues here.
+    // Not java.util.Stack: it is an old class built on Vector, and its own Javadoc says to use Deque instead.
+    // ArrayDeque does not accept null, so a null child must never be pushed.
+    // Empty tree returns an empty list.
+    // The stack lives on the heap, not on the call stack, so a very deep skewed tree works here,
+    // while the recursive versions hit StackOverflowError.
+
+    // preorder: the same order as preorderRecursive (visit node, then lchild's subtree, then rchild's subtree)
+    public List<Integer> preorderIterative() {
+        List<Integer> result = new ArrayList<>();
+        Deque<Node> stack = new ArrayDeque<>();
+        Node current = root;
+        while (current != null || !stack.isEmpty()) {
+            if (current != null) {
+                result.add(current.data);
+                stack.push(current);
+                current = current.lchild;
+            } else {
+                current = stack.pop();
+                current = current.rchild;
+            }
+        }
+        return result;
+    }
+
+    // inorder: the same order as inorderRecursive (lchild's subtree, then visit node, then rchild's subtree)
+    public List<Integer> inorderIterative() {
+        List<Integer> result = new ArrayList<>();
+        Deque<Node> stack = new ArrayDeque<>();
+        Node current = root;
+        while (current != null || !stack.isEmpty()) {
+            if (current != null) {
+                stack.push(current);
+                current = current.lchild;
+            } else {
+                current = stack.pop();
+                result.add(current.data);
+                current = current.rchild;
+            }
+        }
+        return result;
     }
 
     // value is null: returns null and changes nothing

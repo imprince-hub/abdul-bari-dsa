@@ -3,6 +3,7 @@ package m29_tree_traversals;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -11,6 +12,8 @@ public class TreeTraversalsDemo {
         demoCountNodes();
         demoTraversals();
         demoCreateFromKeyboard();
+        demoIterativeTraversals();
+        demoDeepSkewedTree();
         demoTypeYourOwnTree();
     }
 
@@ -143,6 +146,84 @@ public class TreeTraversalsDemo {
     // a PrintStream that prints nothing: new PrintStream(OutputStream.nullOutputStream())
     private static PrintStream silentPrompts() {
         return new PrintStream(OutputStream.nullOutputStream());
+    }
+
+    // Lectures 10 and 11. Label line "=== Iterative traversals ===", then showIterativeTraversals
+    // for the same 6 arrays as demoTraversals. The expected lists are in the comments above
+    // demoTraversals, and every "same as recursive" must be true.
+    // Then the 1,000,000-node complete tree from rangeArray(1_000_000). Do not print its lists; print
+    // "1000000-node complete tree: preorder same = x, inorder same = y" (iterative equals recursive)
+    private static void demoIterativeTraversals() {
+        System.out.println("=== Iterative traversals ===");
+        showIterativeTraversals(new Integer[]{1, 2, 3, 4, 5, 6, 7});
+        showIterativeTraversals(new Integer[]{10, 20, 30, null, 40, 50, null, -1, null, null, 60});
+        showIterativeTraversals(new Integer[]{1, 2, null, 3, null, 4});
+        showIterativeTraversals(new Integer[]{1, null, 2, null, 3});
+        showIterativeTraversals(new Integer[]{7});
+        showIterativeTraversals(new Integer[]{});
+
+        BinaryTree largeTree = new BinaryTree(rangeArray(1_000_000));
+        boolean preorderSame = largeTree.preorderIterative().equals(largeTree.preorderRecursive());
+        boolean inorderSame = largeTree.inorderIterative().equals(largeTree.inorderRecursive());
+        System.out.println("1000000-node complete tree: preorder same = " + preorderSame + ", inorder same = " + inorderSame);
+        System.out.println();
+    }
+
+    // prints the array (Arrays.toString) as a label, builds the tree, then one line each:
+    //   "preorderIterative = [...], same as recursive = true"
+    //   "inorderIterative = [...], same as recursive = true"
+    // then an empty line
+    private static void showIterativeTraversals(Integer[] levelOrder) {
+        System.out.println("levelOrder = " + Arrays.toString(levelOrder));
+        BinaryTree tree = new BinaryTree(levelOrder);
+        List<Integer> preorder = tree.preorderIterative();
+        System.out.println("preorderIterative = " + preorder + ", same as recursive = " + preorder.equals(tree.preorderRecursive()));
+        List<Integer> inorder = tree.inorderIterative();
+        System.out.println("inorderIterative = " + inorder + ", same as recursive = " + inorder.equals(tree.inorderRecursive()));
+        System.out.println();
+    }
+
+    // Lectures 10 and 11. Shows why the iterative versions exist: a left-skewed tree of 1,000,000 levels
+    // from leftSkewedArray(1_000_000). Label line "=== Deep left-skewed tree (1000000 levels) ===".
+    // Do not print the lists; print the list size and its first and last value:
+    //   "preorderIterative: size = 1000000, first = 1, last = 1000000"
+    //   "inorderIterative: size = 1000000, first = 1000000, last = 1"
+    // Then call preorderRecursive() on the same tree inside try/catch (StackOverflowError) and print
+    // "preorderRecursive = StackOverflowError", then an empty line.
+    // Catching an Error is fine only in a demo like this one, never in the data structure class.
+    private static void demoDeepSkewedTree() {
+        System.out.println("=== Deep left-skewed tree (1000000 levels) ===");
+        BinaryTree deepTree = new BinaryTree(leftSkewedArray(1_000_000));
+        List<Integer> preorder = deepTree.preorderIterative();
+        System.out.println("preorderIterative: size = " + preorder.size()
+                + ", first = " + preorder.get(0) + ", last = " + preorder.get(preorder.size() - 1));
+        List<Integer> inorder = deepTree.inorderIterative();
+        System.out.println("inorderIterative: size = " + inorder.size()
+                + ", first = " + inorder.get(0) + ", last = " + inorder.get(inorder.size() - 1));
+        try {
+            deepTree.preorderRecursive();
+            System.out.println("preorderRecursive = finished without StackOverflowError");
+        } catch (StackOverflowError e) {
+            System.out.println("preorderRecursive = StackOverflowError");
+        }
+        System.out.println();
+    }
+
+    // returns a left-skewed tree in level order: 1 is the root, then the pair (k, null) for k = 2 to n,
+    // so node k gets lchild k + 1 and no rchild. Length is 2n - 1:
+    //   n = 4 gives {1, 2, null, 3, null, 4, null}
+    //   n = 1 gives {1}
+    //   n = 0 gives {}
+    private static Integer[] leftSkewedArray(int n) {
+        if (n == 0) {
+            return new Integer[0];
+        }
+        Integer[] values = new Integer[2 * n - 1];
+        values[0] = 1;
+        for (int k = 2; k <= n; k++) {
+            values[2 * k - 3] = k;
+        }
+        return values;
     }
 
     // Lectures 8 and 9. Real keyboard: prints a label line "=== Type your own tree (- for the root to skip) ===",
