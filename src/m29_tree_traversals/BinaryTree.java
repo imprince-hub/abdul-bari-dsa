@@ -1,16 +1,22 @@
 package m29_tree_traversals;
 
-import m26_queue.GenericCircularQueue;
-
+import java.io.PrintStream;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Queue;
+import java.util.Scanner;
 
 // Binary tree in linked representation, used for all m29 lectures.
-// From m28 (copied as-is): the level-order array constructor, isEmpty, size, display,
+// From m28: the level-order array constructor, isEmpty, size, display,
 // and the helpers makeChild, checkNoValuesLeft, childText.
-// Queue: m26's GenericCircularQueue<Node>.
+// Queue: java.util.ArrayDeque<Node>, used as Queue<Node> (add, remove, isEmpty).
+// m26's GenericCircularQueue has a fixed capacity, and the keyboard constructor cannot know
+// the number of nodes before they are typed, so m29 uses ArrayDeque everywhere.
 // New in m29: countRecursive (lectures 1 and 2),
-// preorderRecursive, inorderRecursive, postorderRecursive (lectures 3 to 7).
+// preorderRecursive, inorderRecursive, postorderRecursive (lectures 3 to 7),
+// the keyboard constructor BinaryTree(Scanner, PrintStream) (lectures 8 and 9).
 public class BinaryTree {
     private Node root;
     private int size; // number of nodes
@@ -27,11 +33,10 @@ public class BinaryTree {
     //
     // Cases:
     //   null array throws NullPointerException("levelOrder must not be null")
-    //   {} gives an empty tree; return before the queue is made, because capacity 0 is not allowed
+    //   {} gives an empty tree; return before levelOrder[0] is read
     //   levelOrder[0] == null gives an empty tree, but the values after it must all be null (checkNoValuesLeft)
     //   the array ends while nodes are still in the queue: those nodes get no children
     //   the queue becomes empty while the array still has values: checkNoValuesLeft
-    // queue capacity: levelOrder.length, the queue never holds more nodes than that
     public BinaryTree(Integer[] levelOrder) {
         if (levelOrder == null) {
             throw new NullPointerException("levelOrder must not be null");
@@ -39,17 +44,55 @@ public class BinaryTree {
         if (levelOrder.length == 0) {
             return;
         }
-        GenericCircularQueue<Node> queue = new GenericCircularQueue<>(levelOrder.length);
+        Queue<Node> queue = new ArrayDeque<>();
         root = makeChild(levelOrder[0], queue);
         int index = 1;
         while (!queue.isEmpty() && index < levelOrder.length) {
-            Node parent = queue.dequeue();
+            Node parent = queue.remove();
             parent.lchild = makeChild(levelOrder[index++], queue);
             if (index < levelOrder.length) {
                 parent.rchild = makeChild(levelOrder[index++], queue);
             }
         }
         checkNoValuesLeft(levelOrder, index);
+    }
+
+    // Lectures 8 and 9. Builds the tree from typed values, level by level with a queue, in the same
+    // order as the array constructor: the root first, then the lchild and rchild of each node dequeued.
+    // input: where the values come from. new Scanner(System.in) for the keyboard,
+    //        or new Scanner("10 20 - ...") in the demo, so it runs without typing.
+    // prompts: where the questions are printed. System.out for the keyboard,
+    //          or a PrintStream that prints nothing for the demo's fixed inputs.
+    // "-" means "no child" (the same symbol display() prints), so -1 can be a normal value, as in m28.
+    // Every node that is made gets two questions (lchild and rchild), so the input must answer "-"
+    // for every missing child. The tree is complete when the queue is empty; values after that are not read.
+    //
+    // Prompts (readValue prints them without a newline, so the value is typed on the same line):
+    //   "root (- for empty tree): "
+    //   "lchild of 10 (- for none): "
+    //   "rchild of 10 (- for none): "
+    //
+    // Cases:
+    //   input null throws NullPointerException("input must not be null")
+    //   prompts null throws NullPointerException("prompts must not be null")
+    //   "-" for the root gives an empty tree and asks nothing more
+    //   input ends before the queue is empty: readValue throws NoSuchElementException
+    //   a value that is not a number and not "-": NumberFormatException (from Integer.parseInt in readValue)
+    // Every value goes through makeChild, like the array constructor.
+    public BinaryTree(Scanner input, PrintStream prompts) {
+        if (input == null) {
+            throw new NullPointerException("input must not be null");
+        }
+        if (prompts == null) {
+            throw new NullPointerException("prompts must not be null");
+        }
+        Queue<Node> queue = new ArrayDeque<>();
+        root = makeChild(readValue(input, prompts, "root (- for empty tree): "), queue);
+        while (!queue.isEmpty()) {
+            Node parent = queue.remove();
+            parent.lchild = makeChild(readValue(input, prompts, "lchild of " + parent.data + " (- for none): "), queue);
+            parent.rchild = makeChild(readValue(input, prompts, "rchild of " + parent.data + " (- for none): "), queue);
+        }
     }
 
     public boolean isEmpty() {
@@ -64,22 +107,22 @@ public class BinaryTree {
     //   10: lchild 20, rchild 30
     //   20: lchild -, rchild 40
     // "-" means no child (childText)
-    // uses its own GenericCircularQueue<Node> with capacity size
-    // empty tree prints nothing; return before the queue is made, because capacity 0 is not allowed
+    // uses its own ArrayDeque<Node>
+    // empty tree prints nothing; return before the queue is made, because ArrayDeque does not accept null
     public void display() {
         if (isEmpty()) {
             return;
         }
-        GenericCircularQueue<Node> queue = new GenericCircularQueue<>(size);
-        queue.enqueue(root);
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.add(root);
         while (!queue.isEmpty()) {
-            Node node = queue.dequeue();
+            Node node = queue.remove();
             System.out.println(node.data + ": lchild " + childText(node.lchild) + ", rchild " + childText(node.rchild));
             if (node.lchild != null) {
-                queue.enqueue(node.lchild);
+                queue.add(node.lchild);
             }
             if (node.rchild != null) {
-                queue.enqueue(node.rchild);
+                queue.add(node.rchild);
             }
         }
     }
@@ -163,12 +206,12 @@ public class BinaryTree {
     // value is null: returns null and changes nothing
     // otherwise: makes a new Node, enqueues it, adds 1 to size and returns it
     // the caller links the returned node as lchild or rchild
-    private Node makeChild(Integer value, GenericCircularQueue<Node> queue) {
+    private Node makeChild(Integer value, Queue<Node> queue) {
         if (value == null) {
             return null;
         }
         Node newNode = new Node(value);
-        queue.enqueue(newNode);
+        queue.add(newNode);
         size++;
         return newNode;
     }
@@ -182,6 +225,21 @@ public class BinaryTree {
                 throw new IllegalArgumentException("Value " + levelOrder[i] + " at index " + i + " has no parent");
             }
         }
+    }
+
+    // Lectures 8 and 9. prints prompt to prompts (print, not println), then reads the next token from input
+    // "-" returns null (no child); any other token is returned as Integer.parseInt(token)
+    // no token left: NoSuchElementException("Input ended before the tree was complete")
+    private static Integer readValue(Scanner input, PrintStream prompts, String prompt) {
+        prompts.print(prompt);
+        if (!input.hasNext()) {
+            throw new NoSuchElementException("Input ended before the tree was complete");
+        }
+        String token = input.next();
+        if (token.equals("-")) {
+            return null;
+        }
+        return Integer.parseInt(token);
     }
 
     // "-" for null, otherwise the node's data as text
