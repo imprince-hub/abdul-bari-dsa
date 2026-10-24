@@ -16,6 +16,7 @@ public class TreeTraversalsDemo {
         demoDeepSkewedTree();
         demoIterativePostorder();
         demoHeight();
+        demoDeleteTree();
         demoTypeYourOwnTree();
     }
 
@@ -305,6 +306,52 @@ public class TreeTraversalsDemo {
         System.out.println("levelOrder = " + Arrays.toString(levelOrder));
         BinaryTree tree = new BinaryTree(levelOrder);
         System.out.println("size = " + tree.size() + ", heightRecursive = " + tree.heightRecursive());
+        System.out.println();
+    }
+
+    // Lecture 16. Label line "=== Delete tree (deleteTreeRecursive) ===", then showDeleteTree
+    // for the same 6 arrays as demoTraversals. After the delete every tree must show
+    // "size = 0, isEmpty = true, preorder = [], heightRecursive = 0", the empty tree too.
+    // Then:
+    //   new BinaryTree(new Integer[]{1, 2, 3}): call deleteTreeRecursive() two times. The second call
+    //     deletes an empty tree and must not throw. Print "deleted two times: size = 0, isEmpty = true"
+    //   new BinaryTree(rangeArray(1_000_000)): do not print the lists; print
+    //     "1000000-node complete tree: size before = 1000000, size after = 0, isEmpty = true"
+    // then an empty line
+    private static void demoDeleteTree() {
+        System.out.println("=== Delete tree (deleteTreeRecursive) ===");
+        showDeleteTree(new Integer[]{1, 2, 3, 4, 5, 6, 7});
+        showDeleteTree(new Integer[]{10, 20, 30, null, 40, 50, null, -1, null, null, 60});
+        showDeleteTree(new Integer[]{1, 2, null, 3, null, 4});
+        showDeleteTree(new Integer[]{1, null, 2, null, 3});
+        showDeleteTree(new Integer[]{7});
+        showDeleteTree(new Integer[]{});
+
+        BinaryTree smallTree = new BinaryTree(new Integer[]{1, 2, 3});
+        smallTree.deleteTreeRecursive();
+        smallTree.deleteTreeRecursive();
+        System.out.println("deleted two times: size = " + smallTree.size() + ", isEmpty = " + smallTree.isEmpty());
+
+        BinaryTree largeTree = new BinaryTree(rangeArray(1_000_000));
+        int sizeBefore = largeTree.size();
+        largeTree.deleteTreeRecursive();
+        System.out.println("1000000-node complete tree: size before = " + sizeBefore
+                + ", size after = " + largeTree.size() + ", isEmpty = " + largeTree.isEmpty());
+        System.out.println();
+    }
+
+    // prints the array (Arrays.toString) as a label and builds the tree, then two lines:
+    //   "before delete: size = x, preorder = [...]"
+    //   (calls deleteTreeRecursive())
+    //   "after delete: size = 0, isEmpty = true, preorder = [], heightRecursive = 0"
+    // then an empty line
+    private static void showDeleteTree(Integer[] levelOrder) {
+        System.out.println("levelOrder = " + Arrays.toString(levelOrder));
+        BinaryTree tree = new BinaryTree(levelOrder);
+        System.out.println("before delete: size = " + tree.size() + ", preorder = " + tree.preorderRecursive());
+        tree.deleteTreeRecursive();
+        System.out.println("after delete: size = " + tree.size() + ", isEmpty = " + tree.isEmpty()
+                + ", preorder = " + tree.preorderRecursive() + ", heightRecursive = " + tree.heightRecursive());
         System.out.println();
     }
 

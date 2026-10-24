@@ -20,7 +20,8 @@ import java.util.Scanner;
 // the keyboard constructor BinaryTree(Scanner, PrintStream) (lectures 8 and 9),
 // preorderIterative, inorderIterative (lectures 10 and 11),
 // postorderIterative, which uses StackEntry.java for its stack (lectures 12 and 13),
-// heightRecursive (lectures 14 and 15).
+// heightRecursive (lectures 14 and 15),
+// deleteTreeRecursive (lecture 16).
 public class BinaryTree {
     private Node root;
     private int size; // number of nodes
@@ -307,6 +308,33 @@ public class BinaryTree {
             return 0;
         }
         return 1 + Math.max(heightRecursive(node.lchild), heightRecursive(node.rchild));
+    }
+
+    // Lecture 16. Deletes the whole tree the lecture's way: every node is deleted in postorder,
+    // lchild's subtree first, then rchild's subtree, then the node itself.
+    // Deleting a node in Java means unlinking it: set its lchild and rchild to null. Java has no free();
+    // the garbage collector frees a node once nothing points to it.
+    // Why postorder: a node's links are the only way to reach its children, so a node may be unlinked
+    // only after both its subtrees are done (in C, after free(p) you cannot read p->lchild any more).
+    // Public wrapper: calls the private helper with root, then sets root = null and size = 0,
+    // so isEmpty() is true, size() is 0, every traversal returns [] and heightRecursive() is 0.
+    // Empty tree: nothing to delete, so nothing happens and nothing is thrown. Calling it twice is fine.
+    // One stack frame per level, so a very deep skewed tree can hit StackOverflowError.
+    public void deleteTreeRecursive() {
+        deleteTreeRecursive(root);
+        root = null;
+        size = 0;
+    }
+
+    // deletes (unlinks) every node in the subtree that starts at node; node == null means nothing to delete
+    private void deleteTreeRecursive(Node node) {
+        if (node == null) {
+            return;
+        }
+        deleteTreeRecursive(node.lchild);
+        deleteTreeRecursive(node.rchild);
+        node.lchild = null;
+        node.rchild = null;
     }
 
     // value is null: returns null and changes nothing
