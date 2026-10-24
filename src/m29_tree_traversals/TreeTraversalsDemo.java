@@ -15,6 +15,7 @@ public class TreeTraversalsDemo {
         demoIterativeTraversals();
         demoDeepSkewedTree();
         demoIterativePostorder();
+        demoHeight();
         demoTypeYourOwnTree();
     }
 
@@ -25,7 +26,7 @@ public class TreeTraversalsDemo {
     // 4. {1, null, 2, null, 3}: right-skewed (every node has only an rchild), count 3
     // 5. {7}: one node, count 1
     // 6. {}: empty tree, count 0
-    // Then a large tree: new BinaryTree(rangeArray(1_000_000)) is a complete tree of height 19.
+    // Then a large tree: new BinaryTree(rangeArray(1_000_000)) is a complete tree with 20 levels (heightRecursive() = 20).
     // Do not print this array; print "1000000 nodes: countRecursive = x, size = y"
     private static void demoCountNodes() {
         System.out.println("=== Counting nodes (countRecursive) ===");
@@ -93,7 +94,7 @@ public class TreeTraversalsDemo {
 
     // Lectures 8 and 9. Keyboard constructor with fixed inputs, so this part runs without typing.
     // Calls showKeyboardTree for each input:
-    // 1. "1 2 3 4 5 6 7 - - - - - - - -": full tree of height 2, size 7 (eight "-" for the four leaves)
+    // 1. "1 2 3 4 5 6 7 - - - - - - - -": full tree with 3 levels, size 7 (eight "-" for the four leaves)
     // 2. "10 20 30 - 40 50 - -1 - - 60 - - - -": the same tree as the array
     //    {10, 20, 30, null, 40, 50, null, -1, null, null, 60}. Build that array tree too and print
     //    "same preorder and inorder as the array tree = true" (compare the lists with equals)
@@ -264,6 +265,46 @@ public class TreeTraversalsDemo {
         BinaryTree tree = new BinaryTree(levelOrder);
         List<Integer> postorder = tree.postorderIterative();
         System.out.println("postorderIterative = " + postorder + ", same as recursive = " + postorder.equals(tree.postorderRecursive()));
+        System.out.println();
+    }
+
+    // Lectures 14 and 15. Label line "=== Height (heightRecursive) ===", then showHeight for each array
+    // (height = number of levels, as in the lecture's code):
+    // 1. {1, 2, 3, 4, 5, 6, 7}: full tree, height 3
+    // 2. {10, 20, 30, null, 40, 50, null, -1, null, null, 60}: some children missing, height 4
+    //    (levels: 10 | 20, 30 | 40, 50 | -1, 60)
+    // 3. {1, 2, null, 3, null, 4}: left-skewed, height 4
+    // 4. {1, null, 2, null, 3}: right-skewed, height 3
+    // 5. {7}: one node, height 1
+    // 6. {}: empty tree, height 0
+    // Then two large trees. Do not print their arrays:
+    //   new BinaryTree(rangeArray(1_000_000)): "1000000-node complete tree: heightRecursive = 20"
+    //     (the smallest height for n nodes: 2^19 <= 1000000 < 2^20, so 20 levels)
+    //   new BinaryTree(leftSkewedArray(1000)): "1000-node left-skewed tree: heightRecursive = 1000"
+    //     (the largest height for n nodes: one node per level)
+    // then an empty line
+    private static void demoHeight() {
+        System.out.println("=== Height (heightRecursive) ===");
+        showHeight(new Integer[]{1, 2, 3, 4, 5, 6, 7});
+        showHeight(new Integer[]{10, 20, 30, null, 40, 50, null, -1, null, null, 60});
+        showHeight(new Integer[]{1, 2, null, 3, null, 4});
+        showHeight(new Integer[]{1, null, 2, null, 3});
+        showHeight(new Integer[]{7});
+        showHeight(new Integer[]{});
+
+        BinaryTree largeTree = new BinaryTree(rangeArray(1_000_000));
+        System.out.println("1000000-node complete tree: heightRecursive = " + largeTree.heightRecursive());
+        BinaryTree skewedTree = new BinaryTree(leftSkewedArray(1000));
+        System.out.println("1000-node left-skewed tree: heightRecursive = " + skewedTree.heightRecursive());
+        System.out.println();
+    }
+
+    // prints the array (Arrays.toString) as a label, builds the tree,
+    // then prints "size = x, heightRecursive = y" on one line, then an empty line
+    private static void showHeight(Integer[] levelOrder) {
+        System.out.println("levelOrder = " + Arrays.toString(levelOrder));
+        BinaryTree tree = new BinaryTree(levelOrder);
+        System.out.println("size = " + tree.size() + ", heightRecursive = " + tree.heightRecursive());
         System.out.println();
     }
 

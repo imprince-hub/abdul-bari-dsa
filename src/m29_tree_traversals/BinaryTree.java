@@ -19,7 +19,8 @@ import java.util.Scanner;
 // preorderRecursive, inorderRecursive, postorderRecursive (lectures 3 to 7),
 // the keyboard constructor BinaryTree(Scanner, PrintStream) (lectures 8 and 9),
 // preorderIterative, inorderIterative (lectures 10 and 11),
-// postorderIterative, which uses StackEntry.java for its stack (lectures 12 and 13).
+// postorderIterative, which uses StackEntry.java for its stack (lectures 12 and 13),
+// heightRecursive (lectures 14 and 15).
 public class BinaryTree {
     private Node root;
     private int size; // number of nodes
@@ -287,6 +288,25 @@ public class BinaryTree {
             }
         }
         return result;
+    }
+
+    // Lectures 14 and 15. Height the way the lecture's code counts it: the number of levels,
+    // that is, the number of nodes on the longest path from the root down to a leaf.
+    //   empty tree: 0, one node: 1, {1, 2, 3, 4, 5, 6, 7}: 3
+    // m28's Properties lecture counted height in edges (one node = 0), so levels = that height + 1.
+    // 0 for the empty tree is the real number of levels, not a fake value, so no exception.
+    // Same shape as countRecursive: the public wrapper only calls the private helper with root.
+    // One stack frame per level, so a very deep skewed tree can hit StackOverflowError.
+    public int heightRecursive() {
+        return heightRecursive(root);
+    }
+
+    // number of levels in the subtree that starts at node; node == null means an empty subtree
+    private int heightRecursive(Node node) {
+        if (node == null) {
+            return 0;
+        }
+        return 1 + Math.max(heightRecursive(node.lchild), heightRecursive(node.rchild));
     }
 
     // value is null: returns null and changes nothing
