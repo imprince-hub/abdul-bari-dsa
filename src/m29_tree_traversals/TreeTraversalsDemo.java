@@ -14,6 +14,7 @@ public class TreeTraversalsDemo {
         demoCreateFromKeyboard();
         demoIterativeTraversals();
         demoDeepSkewedTree();
+        demoIterativePostorder();
         demoTypeYourOwnTree();
     }
 
@@ -224,6 +225,46 @@ public class TreeTraversalsDemo {
             values[2 * k - 3] = k;
         }
         return values;
+    }
+
+    // Lectures 12 and 13. Label line "=== Iterative postorder ===", then showIterativePostorder
+    // for the same 6 arrays as demoTraversals. The expected lists are the postorder lists in the
+    // comments above demoTraversals, and every "same as recursive" must be true.
+    // Then two large trees. Do not print their lists:
+    //   new BinaryTree(rangeArray(1_000_000)), complete tree:
+    //     "1000000-node complete tree: postorder same = x" (postorderIterative equals postorderRecursive)
+    //   new BinaryTree(leftSkewedArray(1_000_000)):
+    //     "1000000-level left-skewed tree: size = 1000000, first = 1000000, last = 1" (size, first and last of the list)
+    // then an empty line
+    private static void demoIterativePostorder() {
+        System.out.println("=== Iterative postorder ===");
+        showIterativePostorder(new Integer[]{1, 2, 3, 4, 5, 6, 7});
+        showIterativePostorder(new Integer[]{10, 20, 30, null, 40, 50, null, -1, null, null, 60});
+        showIterativePostorder(new Integer[]{1, 2, null, 3, null, 4});
+        showIterativePostorder(new Integer[]{1, null, 2, null, 3});
+        showIterativePostorder(new Integer[]{7});
+        showIterativePostorder(new Integer[]{});
+
+        BinaryTree largeTree = new BinaryTree(rangeArray(1_000_000));
+        boolean postorderSame = largeTree.postorderIterative().equals(largeTree.postorderRecursive());
+        System.out.println("1000000-node complete tree: postorder same = " + postorderSame);
+
+        BinaryTree deepTree = new BinaryTree(leftSkewedArray(1_000_000));
+        List<Integer> postorder = deepTree.postorderIterative();
+        System.out.println("1000000-level left-skewed tree: size = " + postorder.size()
+                + ", first = " + postorder.get(0) + ", last = " + postorder.get(postorder.size() - 1));
+        System.out.println();
+    }
+
+    // prints the array (Arrays.toString) as a label, builds the tree, then
+    //   "postorderIterative = [...], same as recursive = true"
+    // then an empty line
+    private static void showIterativePostorder(Integer[] levelOrder) {
+        System.out.println("levelOrder = " + Arrays.toString(levelOrder));
+        BinaryTree tree = new BinaryTree(levelOrder);
+        List<Integer> postorder = tree.postorderIterative();
+        System.out.println("postorderIterative = " + postorder + ", same as recursive = " + postorder.equals(tree.postorderRecursive()));
+        System.out.println();
     }
 
     // Lectures 8 and 9. Real keyboard: prints a label line "=== Type your own tree (- for the root to skip) ===",

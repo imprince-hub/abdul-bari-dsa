@@ -18,7 +18,8 @@ import java.util.Scanner;
 // New in m29: countRecursive (lectures 1 and 2),
 // preorderRecursive, inorderRecursive, postorderRecursive (lectures 3 to 7),
 // the keyboard constructor BinaryTree(Scanner, PrintStream) (lectures 8 and 9),
-// preorderIterative, inorderIterative (lectures 10 and 11).
+// preorderIterative, inorderIterative (lectures 10 and 11),
+// postorderIterative, which uses StackEntry.java for its stack (lectures 12 and 13).
 public class BinaryTree {
     private Node root;
     private int size; // number of nodes
@@ -249,6 +250,40 @@ public class BinaryTree {
                 current = stack.pop();
                 result.add(current.data);
                 current = current.rchild;
+            }
+        }
+        return result;
+    }
+
+    // Lectures 12 and 13. Iterative postorder with the lecture's idea: every node goes on the stack two times.
+    // The C version marks the second push by storing the negative address. Java cannot make a reference
+    // negative, so every stack entry carries the mark as a boolean instead (StackEntry.java):
+    //   secondTime false: pushed on the way down; its lchild's subtree is being visited now
+    //   secondTime true: pushed again before going to its rchild; its rchild's subtree is being visited now
+    // What happens to a popped entry depends on secondTime (the lecture's if/else on temp > 0).
+    // Variables: Node current (starts at root), Deque<StackEntry> stack, StackEntry entry (the popped one).
+    // Same rules as preorderIterative and inorderIterative: ArrayDeque used as Deque (push, pop, isEmpty),
+    // never push null, empty tree returns an empty list, the result must equal postorderRecursive().
+    // Unlike preorder and inorder, a node stays on the stack while its rchild's subtree is visited,
+    // so a right-skewed tree has every node on the stack at the same time (fine, the stack is on the heap).
+
+    // postorder: the same order as postorderRecursive (lchild's subtree, then rchild's subtree, then visit node)
+    public List<Integer> postorderIterative() {
+        List<Integer> result = new ArrayList<>();
+        Deque<StackEntry> stack = new ArrayDeque<>();
+        Node current = root;
+        while (current != null || !stack.isEmpty()) {
+            if (current != null) {
+                stack.push(new StackEntry(current, false));
+                current = current.lchild;
+            } else {
+                StackEntry entry = stack.pop();
+                if (!entry.secondTime) {
+                    stack.push(new StackEntry(entry.node, true));
+                    current = entry.node.rchild;
+                } else {
+                    result.add(entry.node.data);
+                }
             }
         }
         return result;
