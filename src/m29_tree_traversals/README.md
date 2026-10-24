@@ -1,6 +1,6 @@
 # 29. Tree Traversals
 
-Package: `m29_tree_traversals` · 20 lectures · 18 done
+Package: `m29_tree_traversals` · 20 lectures · 20 done
 
 Put this line at the top of every file in this folder:
 
@@ -34,8 +34,8 @@ package m29_tree_traversals;
 - [x] Deleting a Binary Tree
 - [x] Level Order Traversal
 - [x] Level Order Traversal Solution
-- [ ] Generating Tree from Traversals
-- [ ] Tree Traversal Solutions
+- [x] Generating Tree from Traversals
+- [x] Tree Traversal Solutions
 
 ## Code in this folder
 
