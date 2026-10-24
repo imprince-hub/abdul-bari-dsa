@@ -2,6 +2,7 @@ package m29_tree_traversals;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -17,6 +18,7 @@ public class TreeTraversalsDemo {
         demoIterativePostorder();
         demoHeight();
         demoDeleteTree();
+        demoLevelOrder();
         demoTypeYourOwnTree();
     }
 
@@ -353,6 +355,65 @@ public class TreeTraversalsDemo {
         System.out.println("after delete: size = " + tree.size() + ", isEmpty = " + tree.isEmpty()
                 + ", preorder = " + tree.preorderRecursive() + ", heightRecursive = " + tree.heightRecursive());
         System.out.println();
+    }
+
+    // Lectures 17 and 18. Label line "=== Level order (levelOrderIterative) ===", then showLevelOrder
+    // for the same 6 arrays as demoTraversals (expected lists):
+    // 1. {1, 2, 3, 4, 5, 6, 7}: [1, 2, 3, 4, 5, 6, 7]
+    // 2. {10, 20, 30, null, 40, 50, null, -1, null, null, 60}: [10, 20, 30, 40, 50, -1, 60]
+    // 3. {1, 2, null, 3, null, 4}: [1, 2, 3, 4]
+    // 4. {1, null, 2, null, 3}: [1, 2, 3]
+    // 5. {7}: [7]
+    // 6. {}: []
+    // Then two large trees. Do not print their lists:
+    //   new BinaryTree(rangeArray(1_000_000)):
+    //     "1000000-node complete tree: same as the array without nulls = x"
+    //   new BinaryTree(leftSkewedArray(1_000_000)):
+    //     "1000000-level left-skewed tree: size = 1000000, first = 1, last = 1000000" (size, first and last of the list)
+    // then an empty line
+    private static void demoLevelOrder() {
+        System.out.println("=== Level order (levelOrderIterative) ===");
+        showLevelOrder(new Integer[]{1, 2, 3, 4, 5, 6, 7});
+        showLevelOrder(new Integer[]{10, 20, 30, null, 40, 50, null, -1, null, null, 60});
+        showLevelOrder(new Integer[]{1, 2, null, 3, null, 4});
+        showLevelOrder(new Integer[]{1, null, 2, null, 3});
+        showLevelOrder(new Integer[]{7});
+        showLevelOrder(new Integer[]{});
+
+        Integer[] completeArray = rangeArray(1_000_000);
+        BinaryTree largeTree = new BinaryTree(completeArray);
+        boolean sameAsArray = largeTree.levelOrderIterative().equals(nonNullValues(completeArray));
+        System.out.println("1000000-node complete tree: same as the array without nulls = " + sameAsArray);
+
+        BinaryTree deepTree = new BinaryTree(leftSkewedArray(1_000_000));
+        List<Integer> visited = deepTree.levelOrderIterative();
+        System.out.println("1000000-level left-skewed tree: size = " + visited.size()
+                + ", first = " + visited.get(0) + ", last = " + visited.get(visited.size() - 1));
+        System.out.println();
+    }
+
+    // prints the array (Arrays.toString) as a label, builds the tree, then
+    //   "levelOrderIterative = [...], same as the array without nulls = true"
+    // (compare with nonNullValues(levelOrder) using equals), then an empty line
+    private static void showLevelOrder(Integer[] levelOrder) {
+        System.out.println("levelOrder = " + Arrays.toString(levelOrder));
+        BinaryTree tree = new BinaryTree(levelOrder);
+        List<Integer> visited = tree.levelOrderIterative();
+        System.out.println("levelOrderIterative = " + visited
+                + ", same as the array without nulls = " + visited.equals(nonNullValues(levelOrder)));
+        System.out.println();
+    }
+
+    // returns the values of the array in the same order, with the nulls left out, as a new List<Integer>
+    // {10, 20, null, 40} gives [10, 20, 40]; {} gives []; {null, null} gives []
+    private static List<Integer> nonNullValues(Integer[] values) {
+        List<Integer> result = new ArrayList<>();
+        for (Integer value : values) {
+            if (value != null) {
+                result.add(value);
+            }
+        }
+        return result;
     }
 
     // Lectures 8 and 9. Real keyboard: prints a label line "=== Type your own tree (- for the root to skip) ===",

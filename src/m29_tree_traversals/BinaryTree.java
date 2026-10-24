@@ -21,7 +21,8 @@ import java.util.Scanner;
 // preorderIterative, inorderIterative (lectures 10 and 11),
 // postorderIterative, which uses StackEntry.java for its stack (lectures 12 and 13),
 // heightRecursive (lectures 14 and 15),
-// deleteTreeRecursive (lecture 16).
+// deleteTreeRecursive (lecture 16),
+// levelOrderIterative (lectures 17 and 18).
 public class BinaryTree {
     private Node root;
     private int size; // number of nodes
@@ -335,6 +336,38 @@ public class BinaryTree {
         deleteTreeRecursive(node.rchild);
         node.lchild = null;
         node.rchild = null;
+    }
+
+    // Lectures 17 and 18. Level order: visit the nodes level by level from the root down,
+    // and from left to right inside a level. Returns the data in visit order as a new list.
+    // Named levelOrderIterative like the other non-recursive traversals (and so it does not read
+    // like the levelOrder array that the constructor takes).
+    // Queue: java.util.ArrayDeque<Node> used as Queue<Node> (add, remove, isEmpty), the same as display(),
+    // which already walks the tree in this order but prints lines instead of returning the data.
+    // ArrayDeque does not accept null, so null is never added to the queue (an empty tree's root too).
+    // Variables: List<Integer> result, Queue<Node> queue, Node node (the one just removed).
+    // Empty tree returns an empty list.
+    // No recursion, so a very deep skewed tree works here.
+    // Check used by the demo: the array constructor builds the tree in level order, so for a tree
+    // made from an array, the result equals the array's values without the nulls.
+    public List<Integer> levelOrderIterative() {
+        if (isEmpty()) {
+            return new ArrayList<>();
+        }
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.add(root);
+        List<Integer> result = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            Node node = queue.remove();
+            result.add(node.data);
+            if (node.lchild != null) {
+                queue.add(node.lchild);
+            }
+            if (node.rchild != null) {
+                queue.add(node.rchild);
+            }
+        }
+        return result;
     }
 
     // value is null: returns null and changes nothing
