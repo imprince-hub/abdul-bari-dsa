@@ -1,6 +1,6 @@
 # 30. Binary Search Trees
 
-Package: `m30_binary_search_trees` · 13 lectures · 2 done
+Package: `m30_binary_search_trees` · 13 lectures · 3 done
 
 Put this line at the top of every file in this folder:
 
@@ -11,7 +11,7 @@ package m30_binary_search_trees;
 ## Introduction and Basic Operations in BST
 
 - [x] Introduction to Binary Search Tree
-- [ ] Searching in BST
+- [x] Searching in BST
 - [x] Inserting in BST
 - [ ] Creating a BST
 - [ ] Creating a Binary Search Tree - Solution
@@ -35,7 +35,7 @@ package m30_binary_search_trees;
 | File | What it has |
 |------|-------------|
 | `Node.java` | One node in linked representation: `lchild`, `data` (the key), `rchild` (copy of the m29 `Node`) |
-| `BinarySearchTree.java` | Introduction and Basic Operations in BST. Copied from m29: `isEmpty()`, `size()`, `display()`, `childText`, `preorderRecursive()`, `inorderRecursive()`. Done, lecture 3: `insertIterative(key)` walks down from `root` with `current` and keeps `parent` one step behind (the lecture's tail pointer `r`). Equal key returns `false` and changes nothing; otherwise the new node is linked as `parent`'s lchild or rchild, `size` goes up by 1 and it returns `true`. Empty tree: the new node becomes `root`. No recursion, so 20,000 sorted keys (a 20,000-level skewed tree) and 1,000,000 shuffled keys both work. To write: `searchIterative(key)`, `searchRecursive(key)` (lecture 2), `insertRecursive(key)` and the constructor `BinarySearchTree(int[] keys)` (lectures 4 and 5). Search returns `boolean`. Only the constructor throws (`NullPointerException` for `null` keys) |
+| `BinarySearchTree.java` | Introduction and Basic Operations in BST. Copied from m29: `isEmpty()`, `size()`, `display()`, `childText`, `preorderRecursive()`, `inorderRecursive()`. Done, lecture 3: `insertIterative(key)` walks down from `root` with `current` and keeps `parent` one step behind (the lecture's tail pointer `r`). Equal key returns `false` and changes nothing; otherwise the new node is linked as `parent`'s lchild or rchild, `size` goes up by 1 and it returns `true`. Empty tree: the new node becomes `root`. No recursion, so 20,000 sorted keys (a 20,000-level skewed tree) and 1,000,000 shuffled keys both work. Done, lecture 2: `searchIterative(key)` and `searchRecursive(key)` return `true` if the key is in the tree. Both follow one path down from `root` and make one move per step: equal key returns `true`, a smaller key goes to lchild, otherwise rchild; reaching `null` returns `false` (also for an empty tree). The recursive helper returns `false` for `null`; its recursive call is the last thing it does, so nothing happens in the returning phase. Tested on 1,000,000 shuffled even keys, searching every number from 0 to 2,000,001: both give the right answer every time. A 50,000-level skewed tree works with the default stack; with a small stack (`-Xss256k`) `searchRecursive` throws `StackOverflowError` while `searchIterative` still works. To write: `insertRecursive(key)` and the constructor `BinarySearchTree(int[] keys)` (lectures 4 and 5). Search returns `boolean`. Only the constructor throws (`NullPointerException` for `null` keys) |
 | `BinarySearchTreeDemo.java` | Skeleton. `main()` calls `demoInsertIterative()`, `demoCreate()`, `demoSearch()`, `demoInsertRecursive()` and `demoLargeTree()`, in that order. Expected output is in the comments above each method |
 
 [Back to all modules](../../README.md)

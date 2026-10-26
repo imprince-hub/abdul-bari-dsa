@@ -50,19 +50,39 @@ public class BinarySearchTree {
     // Variables: Node current (the lecture's t), starts at root.
     // No recursion, so it works for any height.
     public boolean searchIterative(int key) {
-        throw new UnsupportedOperationException("TODO: lecture 2");
+        Node current = root;
+        while (current != null) {
+            if (key == current.data) {
+                return true;
+            }
+            if (key < current.data) {
+                current = current.lchild;
+            } else {
+                current = current.rchild;
+            }
+        }
+        return false;
     }
 
     // Lecture 2. The same answer as searchIterative, with recursion (the lecture's RSearch).
     // The public wrapper only calls the private helper with root.
     // One stack frame per level, so a very deep skewed tree can hit StackOverflowError.
     public boolean searchRecursive(int key) {
-        throw new UnsupportedOperationException("TODO: lecture 2");
+        return searchRecursive(root, key);
     }
 
     // is key in the subtree that starts at node? node == null means an empty subtree
     private boolean searchRecursive(Node node, int key) {
-        throw new UnsupportedOperationException("TODO: lecture 2");
+        if (node == null) {
+            return false;
+        }
+        if (key == node.data) {
+            return true;
+        }
+        if (key < node.data) {
+            return searchRecursive(node.lchild, key);
+        }
+        return searchRecursive(node.rchild, key);
     }
 
     // Lecture 3. Adds key at its place, so the BST rule still holds. A new key always becomes a leaf.
