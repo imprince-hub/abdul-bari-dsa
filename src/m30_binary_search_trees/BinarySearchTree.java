@@ -15,7 +15,7 @@ import java.util.Queue;
 //   searchIterative, searchRecursive (lecture 2)
 //   insertIterative (lecture 3)
 //   insertRecursive and the constructor BinarySearchTree(int[] keys) (lectures 4 and 5)
-public class BinarySearchTree {
+public final class BinarySearchTree {
     private Node root;
     private int size; // number of nodes
 
@@ -32,7 +32,12 @@ public class BinarySearchTree {
     //   {} gives an empty tree
     //   a duplicate key is skipped, the same as insertIterative, so size can be less than keys.length
     public BinarySearchTree(int[] keys) {
-        throw new UnsupportedOperationException("TODO: lectures 4 and 5");
+        if (keys == null) {
+            throw new NullPointerException("keys must not be null");
+        }
+        for (int key : keys) {
+            insertIterative(key);
+        }
     }
 
     public boolean isEmpty() {
