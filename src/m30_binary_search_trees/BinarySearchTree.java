@@ -133,13 +133,24 @@ public final class BinarySearchTree {
     // the helper adds 1 to size only when it makes a new node. The wrapper stores the helper's result in root.
     // One stack frame per level, so a very deep skewed tree can hit StackOverflowError.
     public boolean insertRecursive(int key) {
-        throw new UnsupportedOperationException("TODO: lectures 4 and 5");
+        int sizeBefore = size;
+        root = insertRecursive(root, key);
+        return sizeBefore + 1 == size;
     }
 
     // inserts key into the subtree that starts at node and returns the root of that subtree after the insert
     // node == null means an empty subtree
     private Node insertRecursive(Node node, int key) {
-        throw new UnsupportedOperationException("TODO: lectures 4 and 5");
+        if (node == null) {
+            size++;
+            return new Node(key);
+        }
+        if (key < node.data) {
+            node.lchild = insertRecursive(node.lchild, key);
+        } else if (key > node.data) {
+            node.rchild = insertRecursive(node.rchild, key);
+        }
+        return node;
     }
 
     // From m29. preorder: visit node, then lchild's subtree, then rchild's subtree.
