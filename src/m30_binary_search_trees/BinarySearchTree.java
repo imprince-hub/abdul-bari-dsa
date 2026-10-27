@@ -2,6 +2,7 @@ package m30_binary_search_trees;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.List;
 import java.util.Queue;
 
@@ -15,6 +16,11 @@ import java.util.Queue;
 //   searchIterative, searchRecursive (lecture 2)
 //   insertIterative (lecture 3)
 //   insertRecursive and the constructor BinarySearchTree(int[] keys) (lectures 4 and 5)
+// New in m30, Deletion and Advanced BST Operations:
+//   deleteRecursive, with inorderPredecessor and inorderSuccessor (lectures 6 to 8)
+//   fromPreorder, with isStrictlyAscending (lecture 9)
+//   Also copied from m29 for these: heightRecursive (deleteRecursive uses it)
+//   and inorderIterative (fromPreorder uses it).
 public final class BinarySearchTree {
     private Node root;
     private int size; // number of nodes
@@ -153,6 +159,116 @@ public final class BinarySearchTree {
         return node;
     }
 
+    // Lectures 6 to 8. Deletes key the lecture's way (the lecture's Delete, with InPre and InSucc).
+    // Returns true if key was found and deleted, false if key is not in the tree (the tree does not change),
+    // like java.util.Set.remove. Empty tree returns false.
+    // The same wrapper and helper pattern as insertRecursive: the wrapper stores the helper's result in root
+    // and finds out what happened from size (the helper takes 1 from size only when it removes a node).
+    // Storing the result in root also covers deleting the last node (the lecture's "if p == root, root = NULL").
+    // One stack frame per level, so a very deep skewed tree can hit StackOverflowError.
+    // Cost: the height checks visit the whole subtree of the node that holds key, so deleting near the root
+    // of a large tree visits almost every node. This is the lecture's method; AVL trees (m31) keep the height
+    // inside the node instead.
+    public boolean deleteRecursive(int key) {
+        int sizeBefore = size;
+        root = deleteRecursive(root, key);
+        return sizeBefore - 1 == size;
+    }
+
+    // deletes key from the subtree that starts at node and returns the root of that subtree after the delete
+    // node == null means an empty subtree, so key is not here
+    // When node holds key:
+    //   node is a leaf: node is removed (take 1 from size) and its parent gets null
+    //   otherwise node stays, but its data is replaced: by its inorder predecessor's data if its lchild's
+    //   subtree is higher than its rchild's subtree (heightRecursive), otherwise by its inorder successor's data.
+    //   Then that copied key is deleted from the subtree it was copied from.
+    // Variables: Node predecessor, Node successor (the lecture's q).
+    private Node deleteRecursive(Node node, int key) {
+        if (node == null) {
+            return null;
+        }
+        if (key < node.data) {
+            node.lchild = deleteRecursive(node.lchild, key);
+        } else if (key > node.data) {
+            node.rchild = deleteRecursive(node.rchild, key);
+        } else if (node.lchild == null && node.rchild == null) {
+            size--;
+            return null;
+        } else if (heightRecursive(node.lchild) > heightRecursive(node.rchild)) {
+            Node predecessor = inorderPredecessor(node);
+            node.data = predecessor.data;
+            node.lchild = deleteRecursive(node.lchild, predecessor.data);
+        } else {
+            Node successor = inorderSuccessor(node);
+            node.data = successor.data;
+            node.rchild = deleteRecursive(node.rchild, successor.data);
+        }
+        return node;
+    }
+
+    // The lecture's InPre. Returns node's inorder predecessor: the node with the biggest key in node's
+    // lchild's subtree (the rightmost node there).
+    // Only called when node.lchild != null; deleteRecursive's height rule makes sure of that.
+    private Node inorderPredecessor(Node node) {
+        Node current = node.lchild;
+        while (current.rchild != null) {
+            current = current.rchild;
+        }
+        return current;
+    }
+
+    // The lecture's InSucc. Returns node's inorder successor: the node with the smallest key in node's
+    // rchild's subtree (the leftmost node there).
+    // Only called when node.rchild != null; deleteRecursive's height rule makes sure of that.
+    private Node inorderSuccessor(Node node) {
+        Node current = node.rchild;
+        while (current.lchild != null) {
+            current = current.lchild;
+        }
+        return current;
+    }
+
+    // Lecture 9. Builds the BST whose preorder is the given array, in one pass with a stack (the lecture's method),
+    // instead of inserting the keys one by one. Every key is placed by looking only at current and the stack,
+    // so it takes O(n) steps even for sorted input, where the constructor takes O(n^2).
+    // A static factory method, not a constructor, because BinarySearchTree(int[] keys) already takes an int[].
+    // It makes an empty tree with new BinarySearchTree() and sets that tree's root and size.
+    // Variables: BinarySearchTree tree, Deque<Node> stack (ArrayDeque: push, pop, peek, isEmpty),
+    // Node current (the lecture's p), Node newNode (the lecture's t), int index (the lecture's i).
+    // The stack's top node is the upper limit for a key that goes to current's rchild. When the stack is empty
+    // there is no upper limit. Do not use Integer.MAX_VALUE as the limit (like the lecture's 32767):
+    // MAX_VALUE can be a real key, and {0, -5, Integer.MAX_VALUE} would then fail.
+    //
+    // Cases:
+    //   preorder null throws NullPointerException("preorder must not be null")
+    //   {} gives an empty tree
+    //   input that is not the preorder of a BST with distinct keys throws
+    //   IllegalArgumentException("not the preorder of a BST with distinct keys"). Two checks find it:
+    //     the lecture's pop step finds the stack empty (happens for a repeated key, like {5, 5}), or
+    //     after building, inorderIterative() is not strictly ascending (isStrictlyAscending), like {5, 3, 8, 4}
+    public static BinarySearchTree fromPreorder(int[] preorder) {
+        throw new UnsupportedOperationException("TODO: lecture 9");
+    }
+
+    // true if every value is smaller than the next one; [] and [x] give true
+    private static boolean isStrictlyAscending(List<Integer> values) {
+        throw new UnsupportedOperationException("TODO: lecture 9");
+    }
+
+    // From m29. Height as the number of levels: empty tree 0, one node 1, {9, 15, 5, 20, 16, 8, 12, 3, 6} 4.
+    // deleteRecursive uses the helper to choose between the inorder predecessor and the inorder successor.
+    public int heightRecursive() {
+        return heightRecursive(root);
+    }
+
+    // number of levels in the subtree that starts at node; node == null means an empty subtree
+    private int heightRecursive(Node node) {
+        if (node == null) {
+            return 0;
+        }
+        return 1 + Math.max(heightRecursive(node.lchild), heightRecursive(node.rchild));
+    }
+
     // From m29. preorder: visit node, then lchild's subtree, then rchild's subtree.
     // Returns the data in visit order as a new list; empty tree returns an empty list.
     public List<Integer> preorderRecursive() {
@@ -185,6 +301,26 @@ public final class BinarySearchTree {
         inorderRecursive(node.lchild, result);
         result.add(node.data);
         inorderRecursive(node.rchild, result);
+    }
+
+    // From m29. The same list as inorderRecursive, but with its own stack instead of the call stack,
+    // so it works for any height. fromPreorder uses it to check the tree it built, because a sorted
+    // preorder gives a very deep skewed tree.
+    public List<Integer> inorderIterative() {
+        List<Integer> result = new ArrayList<>();
+        Deque<Node> stack = new ArrayDeque<>();
+        Node current = root;
+        while (current != null || !stack.isEmpty()) {
+            if (current != null) {
+                stack.push(current);
+                current = current.lchild;
+            } else {
+                current = stack.pop();
+                result.add(current.data);
+                current = current.rchild;
+            }
+        }
+        return result;
     }
 
     // From m29. Prints one line per node, in level order:
