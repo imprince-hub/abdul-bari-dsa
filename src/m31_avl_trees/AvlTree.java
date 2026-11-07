@@ -11,6 +11,8 @@ import java.util.Queue;
 // After an insert, every node on the path back up to root is checked in the returning phase. The first node whose
 // balance factor becomes 2 or -2 is fixed with one rotation (LL, LR, RR or RL). That rotation brings the subtree back
 // to its old height, so the nodes above it are balanced again too.
+// After a delete the same check runs on the way back up, but a rotation can leave the subtree 1 level shorter than
+// before, so a node higher up can reach 2 or -2 as well. A delete can therefore rotate at more than one level.
 // Each node stores its height, so a balance factor takes O(1) steps. The tree height stays about log2(n),
 // so recursion is safe here even for 1,000,000 sorted keys (20 levels).
 // From m30 (your code, copied): isEmpty, size, searchIterative, preorderRecursive, inorderRecursive,
@@ -22,6 +24,9 @@ import java.util.Queue;
 //   rebalance
 //   insertRecursive (the lecture's RInsert) and the constructor AvlTree(int[] keys)
 //   height, display (m30's display plus height and balance factor), isValidAvl with isStrictlyAscending
+// New in m31, AVL Tree Operations and Properties (lectures 7 and 8):
+//   deleteRecursive (the lecture's Delete with rotations)
+//   inorderPredecessor and inorderSuccessor (from m30, now static)
 public final class AvlTree {
     private Node root;
     private int size; // number of nodes
@@ -114,7 +119,84 @@ public final class AvlTree {
         return rebalance(node);
     }
 
-    // Lectures 5 and 6. Called on every node on the insert path, in the returning phase (lowest node first).
+    // Lectures 7 and 8 (the lecture's Delete with rotations). Deletes key the same way as m30's deleteRecursive,
+    // then rebalances every node on the way back up, like insertRecursive.
+    // Returns true if key was found and deleted, false if key is not in the tree (the tree does not change),
+    // like java.util.Set.remove. Empty tree returns false.
+    // Same wrapper pattern as insertRecursive: the wrapper stores the helper's result in root (a rotation at root,
+    // or deleting the last node, changes root) and returns true only if size went down by 1.
+    // Unlike an insert, one delete can need rotations at more than one level (see the comment at the top of the
+    // class). rebalance runs on every node of the path, so each of them is fixed. The path has about log2(n) nodes,
+    // so a delete is still O(log n).
+    public boolean deleteRecursive(int key) {
+        int sizeBefore = size;
+        root = deleteRecursive(root, key);
+        return sizeBefore - 1 == size;
+    }
+
+    // deletes key from the subtree that starts at node and returns the root of that subtree after the delete
+    // (a different node if a rotation happened, null if the subtree is now empty)
+    // node == null: key is not in this subtree, return null
+    // key smaller or bigger: delete from lchild's or rchild's subtree and link the result back, the same as m30,
+    // then return rebalance(node)
+    // key equal:
+    //   node is a leaf: take 1 from size and return null (its parent gets null). No rebalance: nothing is left here.
+    //   otherwise node stays, but its data is replaced, with m30's rule but stored heights instead of
+    //   heightRecursive (so O(1) instead of walking the subtree): by its inorder predecessor's data if
+    //   storedHeight(node.lchild) > storedHeight(node.rchild), otherwise by its inorder successor's data.
+    //   Then delete that copied key from the subtree it was copied from, link the result back,
+    //   and return rebalance(node).
+    // Variables: Node predecessor, Node successor (the lecture's q).
+    private Node deleteRecursive(Node node, int key) {
+        if (node == null) {
+            return null;
+        }
+        if (key < node.data) {
+            node.lchild = deleteRecursive(node.lchild, key);
+        } else if (key > node.data) {
+            node.rchild = deleteRecursive(node.rchild, key);
+        } else if (node.lchild == null && node.rchild == null) {
+            size--;
+            return null;
+        } else if (storedHeight(node.lchild) > storedHeight(node.rchild)) {
+            Node predecessor = inorderPredecessor(node);
+            node.data = predecessor.data;
+            node.lchild = deleteRecursive(node.lchild, predecessor.data);
+        } else {
+            Node successor = inorderSuccessor(node);
+            node.data = successor.data;
+            node.rchild = deleteRecursive(node.rchild, successor.data);
+        }
+        return rebalance(node);
+    }
+
+    // From m30 (your code, copied; now static because it uses no fields). The lecture's InPre.
+    // Returns node's inorder predecessor: the node with the biggest key in node's lchild's subtree
+    // (the rightmost node there).
+    // Only called when node.lchild != null: deleteRecursive only asks for it when lchild's stored height is bigger
+    // than rchild's, so lchild's height is at least 1.
+    private static Node inorderPredecessor(Node node) {
+        Node current = node.lchild;
+        while (current.rchild != null) {
+            current = current.rchild;
+        }
+        return current;
+    }
+
+    // From m30 (your code, copied; now static because it uses no fields). The lecture's InSucc.
+    // Returns node's inorder successor: the node with the smallest key in node's rchild's subtree
+    // (the leftmost node there).
+    // Only called when node.rchild != null: node is not a leaf, and lchild's stored height is not bigger than
+    // rchild's, so if rchild were null, lchild would be null too.
+    private static Node inorderSuccessor(Node node) {
+        Node current = node.rchild;
+        while (current.lchild != null) {
+            current = current.lchild;
+        }
+        return current;
+    }
+
+    // Lectures 5 to 8. Called on every node on the insert or delete path, in the returning phase (lowest node first).
     // First store node's new height (nodeHeight), then check its balance factor:
     //   2 and balanceFactor(node.lchild) >= 0: llRotation
     //   2 and anything else (lchild's balance factor is -1): lrRotation
@@ -124,7 +206,9 @@ public final class AvlTree {
     // Returns the root of this subtree after that (node itself when there is no rotation).
     // The lecture checks lchild's balance factor == 1 (and rchild's == -1). After an insert the child's balance
     // factor is always 1 or -1 at this point, so both give the same result. >= 0 and <= 0 also cover 0, which can
-    // happen after a delete (lecture 7), so deleteRecursive can use this same method later.
+    // only happen after a delete, so deleteRecursive uses this same method. The delete lectures name the six cases
+    // by the side that is too high and the child's balance factor: L1 and L0 use llRotation, L-1 uses lrRotation,
+    // R-1 and R0 use rrRotation, R1 uses rlRotation.
     // A balance factor of 3 or -3 cannot happen: every node is fixed as soon as it reaches 2 or -2.
     private static Node rebalance(Node node) {
         node.height = nodeHeight(node);

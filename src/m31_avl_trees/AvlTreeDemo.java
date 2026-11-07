@@ -13,6 +13,12 @@ public class AvlTreeDemo {
         demoCreate();
         demoLargeTrees();
         demoRandomCheck();
+        demoDeleteRotations();
+        demoDelete();
+        demoDeleteMultipleRotations();
+        demoDeleteAll();
+        demoDeleteLarge();
+        demoDeleteRandomCheck();
     }
 
     // Lectures 3, 5 and 6. Calls showTree for each array. Each one does exactly one rotation (named below).
@@ -198,6 +204,243 @@ public class AvlTreeDemo {
             maxHeight = Math.max(maxHeight, tree.height());
         }
         System.out.println(trees + " random trees: failures = " + failures + ", max height = " + maxHeight);
+        System.out.println();
+    }
+
+    // Lectures 7 and 8. The six rotation cases of a delete, named the lecture's way (the side that is too high,
+    // then the child's balance factor). Calls showDelete(keys, key) for each. Every tree is built with the
+    // constructor without any rotation, and the delete makes one node's balance factor 2 or -2.
+    // 1. {30, 20, 40, 10} delete 40: L1 at 30 (lchild 20 has bf 1), llRotation
+    //    after: size 3, height 2, preorder [20, 10, 30]
+    // 2. {30, 10, 40, 20} delete 40: L-1 at 30 (lchild 10 has bf -1), lrRotation
+    //    after: size 3, height 2, preorder [20, 10, 30]
+    // 3. {30, 20, 40, 10, 25} delete 40: L0 at 30 (lchild 20 has bf 0, which only a delete can cause), llRotation
+    //    after: size 4, height 3, preorder [20, 10, 30, 25], display():
+    //      20 (height 3, bf -1): lchild 10, rchild 30
+    //      10 (height 1, bf 0): lchild -, rchild -
+    //      30 (height 2, bf 1): lchild 25, rchild -
+    //      25 (height 1, bf 0): lchild -, rchild -
+    //    The height stays 3 here: after an L0 rotation the subtree is not shorter than before the delete.
+    // 4. {20, 10, 30, 40} delete 10: R-1 at 20 (rchild 30 has bf -1), rrRotation
+    //    after: size 3, height 2, preorder [30, 20, 40]
+    // 5. {20, 10, 40, 30} delete 10: R1 at 20 (rchild 40 has bf 1), rlRotation
+    //    after: size 3, height 2, preorder [30, 20, 40]
+    // 6. {20, 10, 30, 25, 40} delete 10: R0 at 20 (rchild 30 has bf 0), rrRotation
+    //    after: size 4, height 3, preorder [30, 20, 25, 40]
+    // Every one returns true and prints "isValidAvl = true".
+    private static void demoDeleteRotations() {
+        System.out.println("=== Delete rotations (L1, L-1, L0, R-1, R1, R0) ===");
+        int[][] cases = {
+                {30, 20, 40, 10},
+                {30, 10, 40, 20},
+                {30, 20, 40, 10, 25},
+                {20, 10, 30, 40},
+                {20, 10, 40, 30},
+                {20, 10, 30, 25, 40}
+        };
+        int[] deleteKeys = {40, 40, 40, 10, 10, 10};
+        String[] rotations = {
+                "L1 at 30 (llRotation)", "L-1 at 30 (lrRotation)", "L0 at 30 (llRotation)",
+                "R-1 at 20 (rrRotation)", "R1 at 20 (rlRotation)", "R0 at 20 (rrRotation)"
+        };
+        for (int i = 0; i < cases.length; i++) {
+            System.out.println("case " + (i + 1) + ", expected rotation: " + rotations[i]);
+            showDelete(cases[i], deleteKeys[i]);
+        }
+    }
+
+    // Lectures 7 and 8. Deleting nodes that hold a key in different places. Calls showDelete(keys, key) for each.
+    // On the lecture's tree {40, 20, 10, 25, 30, 22, 50} (preorder [25, 20, 10, 22, 40, 30, 50], height 3):
+    // 1. delete 10, a leaf: true, size 6, height 3, preorder [25, 20, 22, 40, 30, 50], no rotation
+    // 2. delete 25, the root: both subtrees have height 2, so its inorder successor 30 takes its place:
+    //    preorder [30, 20, 10, 22, 40, 50]
+    // 3. delete 20: both children are leaves (same height), so successor 22: preorder [25, 22, 10, 40, 30, 50]
+    // 4. delete 40: the same, successor 50: preorder [25, 20, 10, 22, 50, 30]
+    // 5. delete 99, not in the tree: false, size 7, preorder does not change
+    // Other trees:
+    // 6. {20, 10, 30, 25} delete 30, only an lchild: predecessor 25, preorder [20, 10, 25], height 2
+    // 7. {20, 10, 30, 40} delete 30, only an rchild: successor 40, preorder [20, 10, 40], height 2
+    // 8. {40, 20, 50, 10, 30, 60, 5} (preorder [40, 20, 10, 5, 30, 50, 60], height 4) delete 40: lchild's subtree
+    //    is higher (3 > 2), so predecessor 30 takes its place. Removing 30 from under 20 gives 20 a bf of 2 with
+    //    lchild 10 at bf 1: L1 at 20, llRotation. After: size 6, height 3, preorder [30, 10, 5, 20, 50, 60]
+    // 9. {7} delete 7, the only node: true, size 0, height 0, display() prints nothing
+    // 10. {} delete 5: false, size 0
+    // Every one prints "isValidAvl = true".
+    private static void demoDelete() {
+        System.out.println("=== Deleting (deleteRecursive) ===");
+        int[] lectureTree = {40, 20, 10, 25, 30, 22, 50};
+        for (int key : new int[]{10, 25, 20, 40, 99}) {
+            showDelete(lectureTree, key);
+        }
+        showDelete(new int[]{20, 10, 30, 25}, 30);
+        showDelete(new int[]{20, 10, 30, 40}, 30);
+        showDelete(new int[]{40, 20, 50, 10, 30, 60, 5}, 40);
+        showDelete(new int[]{7}, 7);
+        showDelete(new int[]{}, 5);
+    }
+
+    // prints "keys = [...], delete 40", then "before: preorder = [...]",
+    // then "deleteRecursive(40) = true, size = 3, height = 2, isValidAvl = true",
+    // then "after: preorder = [...]" and "after: inorder = [...]", then display() and an empty line
+    private static void showDelete(int[] keys, int key) {
+        System.out.println("keys = " + Arrays.toString(keys) + ", delete " + key);
+        AvlTree tree = new AvlTree(keys);
+        System.out.println("before: preorder = " + tree.preorderRecursive());
+        boolean deleted = tree.deleteRecursive(key);
+        System.out.println("deleteRecursive(" + key + ") = " + deleted + ", size = " + tree.size()
+                + ", height = " + tree.height() + ", isValidAvl = " + tree.isValidAvl());
+        System.out.println("after: preorder = " + tree.preorderRecursive());
+        System.out.println("after: inorder = " + tree.inorderRecursive());
+        tree.display();
+        System.out.println();
+    }
+
+    // Lectures 7 and 8. One delete that needs two rotations. Calls showDelete for
+    // {80, 30, 100, 20, 50, 90, 110, 10, 40, 60, 120, 70} delete 90.
+    // The keys are the tree's level order, so the constructor makes no rotation: size 12, height 5,
+    // preorder [80, 30, 20, 10, 50, 40, 60, 70, 100, 90, 110, 120].
+    // Deleting 90 (a leaf) gives 100 a bf of -2 with rchild 110 at bf -1: R-1 at 100, rrRotation. That subtree
+    // drops from height 3 to 2, so now 80 has bf 2 (4 against 2) with lchild 30 at bf -1: L-1 at 80, lrRotation,
+    // and 50 becomes the root.
+    // After: true, size 11, height 4, preorder [50, 30, 20, 10, 40, 80, 60, 70, 110, 100, 120], display():
+    //   50 (height 4, bf 0): lchild 30, rchild 80
+    //   30 (height 3, bf 1): lchild 20, rchild 40
+    //   80 (height 3, bf 0): lchild 60, rchild 110
+    //   20 (height 2, bf 1): lchild 10, rchild -
+    //   40 (height 1, bf 0): lchild -, rchild -
+    //   60 (height 2, bf -1): lchild -, rchild 70
+    //   110 (height 2, bf 0): lchild 100, rchild 120
+    //   10 (height 1, bf 0): lchild -, rchild -
+    //   70 (height 1, bf 0): lchild -, rchild -
+    //   100 (height 1, bf 0): lchild -, rchild -
+    //   120 (height 1, bf 0): lchild -, rchild -
+    private static void demoDeleteMultipleRotations() {
+        System.out.println("=== One delete, two rotations (R-1 at 100, then L-1 at 80) ===");
+        int[] keys = {80, 30, 100, 20, 50, 90, 110, 10, 40, 60, 120, 70};
+        AvlTree before = new AvlTree(keys);
+        System.out.println("before: size = " + before.size() + ", height = " + before.height());
+        showDelete(keys, 90);
+    }
+
+    // Lectures 7 and 8. Builds the lecture's tree {40, 20, 10, 25, 30, 22, 50} and deletes its keys in the same
+    // order. After each one print
+    // "deleteRecursive(40) = true, size = 6, height = 3, isValidAvl = true, inorder = [...]".
+    // Expected height and inorder after each delete:
+    //   40: height 3, [10, 20, 22, 25, 30, 50]
+    //   20: height 3, [10, 22, 25, 30, 50]
+    //   10: height 3, [22, 25, 30, 50]
+    //   25: height 2, [22, 30, 50]
+    //   30: height 2, [22, 50]
+    //   22: height 1, [50]
+    //   50: height 0, []
+    // Then print "isEmpty = true", then deleteRecursive(40) once more on the empty tree: false.
+    private static void demoDeleteAll() {
+        System.out.println("=== Deleting every key of the lecture's tree ===");
+        int[] keys = {40, 20, 10, 25, 30, 22, 50};
+        AvlTree tree = new AvlTree(keys);
+        for (int key : keys) {
+            boolean deleted = tree.deleteRecursive(key);
+            System.out.println("deleteRecursive(" + key + ") = " + deleted + ", size = " + tree.size()
+                    + ", height = " + tree.height() + ", isValidAvl = " + tree.isValidAvl()
+                    + ", inorder = " + tree.inorderRecursive());
+        }
+        System.out.println("isEmpty = " + tree.isEmpty());
+        System.out.println("deleteRecursive(40) again = " + tree.deleteRecursive(40));
+        System.out.println();
+    }
+
+    // Lectures 7 and 8. Large deletes. Do not print the arrays.
+    // 1. new AvlTree(rangeArray(1_000_000)), then showDeleteEvens("sorted", tree, 1_000_000). Expected:
+    //      "sorted: deleted the 500000 even keys: all returned true = true, size = 500000, height = 20"
+    //      "inorder equals 1, 3, ..., 999999 = true"
+    //      "isValidAvl = true"
+    //      "deleteRecursive(2) again = false"
+    // 2. new AvlTree(shuffledRange(1_000_000, 30)), then showDeleteEvens("shuffled", tree, 1_000_000): the same lines
+    //    with height = 23.
+    // Then on the shuffled tree delete every odd key 1, 3, ..., 999999 and print
+    //    "deleted the 500000 odd keys: all returned true = true, isEmpty = true, height = 0"
+    // Recursion is fine here: the height never goes above 24.
+    private static void demoDeleteLarge() {
+        System.out.println("=== Large deletes (1,000,000 keys) ===");
+        int n = 1_000_000;
+        showDeleteEvens("sorted", new AvlTree(rangeArray(n)), n);
+        AvlTree shuffled = new AvlTree(shuffledRange(n, 30));
+        showDeleteEvens("shuffled", shuffled, n);
+        boolean allDeleted = true;
+        for (int key = 1; key <= n; key += 2) {
+            if (!shuffled.deleteRecursive(key)) {
+                allDeleted = false;
+            }
+        }
+        System.out.println("deleted the " + n / 2 + " odd keys: all returned true = " + allDeleted
+                + ", isEmpty = " + shuffled.isEmpty() + ", height = " + shuffled.height());
+        System.out.println();
+    }
+
+    // calls deleteRecursive for every even key 2, 4, ..., n in that order on a tree that holds 1..n, then prints the
+    // four lines that demoDeleteLarge describes (inorderRecursive() compared with oddList(n) using equals);
+    // order is "sorted" or "shuffled"
+    private static void showDeleteEvens(String order, AvlTree tree, int n) {
+        boolean allDeleted = true;
+        for (int key = 2; key <= n; key += 2) {
+            if (!tree.deleteRecursive(key)) {
+                allDeleted = false;
+            }
+        }
+        System.out.println(order + ": deleted the " + n / 2 + " even keys: all returned true = " + allDeleted
+                + ", size = " + tree.size() + ", height = " + tree.height());
+        System.out.println("inorder equals 1, 3, ..., " + (n - 1) + " = " + tree.inorderRecursive().equals(oddList(n)));
+        System.out.println("isValidAvl = " + tree.isValidAvl());
+        System.out.println("deleteRecursive(2) again = " + tree.deleteRecursive(2));
+    }
+
+    // Lectures 7 and 8. Compares deleteRecursive with java.util.TreeSet<Integer> on 2000 random trees.
+    // Random random = new Random(32). For each tree: count = random.nextInt(51). First insert count keys, each
+    // random.nextInt(100), into new AvlTree() and new TreeSet<>(). Then do count deletes, each key random.nextInt(100),
+    // so some keys are not in the tree. Make the random calls in exactly this order, so every run is the same.
+    // For every delete:
+    //   deleteRecursive(key) must return the same as set.remove(key)
+    //   after the delete, isValidAvl() must be true
+    //   after the delete, inorderRecursive() must equal new ArrayList<>(set)
+    // Every check that fails adds 1 to failures. Also count all deletes, and the deletes that found the key.
+    // Expected: "2000 random trees, 49686 deletes (11567 found the key): failures = 0"
+    private static void demoDeleteRandomCheck() {
+        System.out.println("=== Random delete check against java.util.TreeSet ===");
+        Random random = new Random(32);
+        int trees = 2000;
+        int deletes = 0;
+        int found = 0;
+        int failures = 0;
+        for (int trial = 0; trial < trees; trial++) {
+            int count = random.nextInt(51);
+            AvlTree tree = new AvlTree();
+            TreeSet<Integer> set = new TreeSet<>();
+            for (int i = 0; i < count; i++) {
+                int key = random.nextInt(100);
+                tree.insertRecursive(key);
+                set.add(key);
+            }
+            for (int i = 0; i < count; i++) {
+                int key = random.nextInt(100);
+                boolean deleted = tree.deleteRecursive(key);
+                boolean removed = set.remove(key);
+                deletes++;
+                if (removed) {
+                    found++;
+                }
+                if (deleted != removed) {
+                    failures++;
+                }
+                if (!tree.isValidAvl()) {
+                    failures++;
+                }
+                if (!tree.inorderRecursive().equals(new ArrayList<>(set))) {
+                    failures++;
+                }
+            }
+        }
+        System.out.println(trees + " random trees, " + deletes + " deletes (" + found + " found the key): failures = "
+                + failures);
     }
 
     // the 7 arrays used by demoCreate, in the order its comment lists them
@@ -218,6 +461,15 @@ public class AvlTreeDemo {
         int[] values = new int[n];
         for (int i = 0; i < n; i++) {
             values[i] = i + 1;
+        }
+        return values;
+    }
+
+    // returns the odd numbers from 1 to n: [1, 3, 5, ...]; n = 0 gives [] (the same helper as m30's oddList)
+    private static List<Integer> oddList(int n) {
+        List<Integer> values = new ArrayList<>((n + 1) / 2);
+        for (int i = 1; i <= n; i += 2) {
+            values.add(i);
         }
         return values;
     }
